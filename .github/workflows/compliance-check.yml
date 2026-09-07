@@ -306,7 +306,7 @@ jobs:
             file=${line%%:*}
             rest=${line#*:}
             lineno=${rest%%:*}
-            ref=$(printf '%s' "$rest" | sed -E 's/.*uses:[[:space:]]*//; s/[[:space:]]*$//')
+            ref=$(printf '%s' "$rest" | sed -E 's/.*uses:[[:space:]]*//; s/[[:space:]]*$//; s/[[:space:]]*#.*$//')
             # A local reusable workflow reference is not a third-party action.
             case "$ref" in
               ./*|./.github/*) continue ;;
