@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa.viavitae.com/schemas/webhook.schema.json",
+  "title": "Webhook Payload Schemas",
+  "description": "Schemas for Stripe, Paysera and Bitrix24 webhook payloads. Test-mode only.",
+  "type": "object",
+  "oneOf": [
+    { "$ref": "#/$defs/stripe_payment_intent" },
+    { "$ref": "#/$defs/paysera_callback" },
+    { "$ref": "#/$defs/bitrix24_lead_created" }
+  ],
+  "$defs": {
+    "stripe_payment_intent": {
+      "type": "object",
+      "required": ["id", "object", "type", "data"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^evt_test_[a-zA-Z0-9]+$" },
+        "object": { "const": "event" },
+        "type": { "const": "payment_intent.succeeded" },
+        "data": {
+          "type": "object",
+          "required": ["object"],
+          "properties": {
+            "object": {
+              "type": "object",
+              "required": ["id", "amount", "currency", "status"],
+              "properties": {
+                "id": { "type": "string", "pattern": "^pi_test_[a-zA-Z0-9]+$" },
+                "amount": { "type": "integer", "minimum": 100 },
+                "currency": { "const": "eur" },
+                "status": { "const": "succeeded" },
+                "metadata": { "type": "object" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "paysera_callback": {
+      "type": "object",
+      "required": ["orderid", "status", "amount", "currency", "test"],
+      "properties": {
+        "orderid": { "type": "string" },
+        "status": { "enum": ["1", "2"] },
+        "amount": { "type": "string", "pattern": "^[0-9]+$" },
+        "currency": { "const": "EUR" },
+        "test": { "const": "1" },
+        "sign": { "type": "string" }
+      }
+    },
+    "bitrix24_lead_created": {
+      "type": "object",
+      "required": ["event", "data"],
+      "properties": {
+        "event": { "const": "ONCRMLEADADD" },
+        "data": {
+          "type": "object",
+          "required": ["FIELDS"],
+          "properties": {
+            "FIELDS": {
+              "type": "object",
+              "properties": {
+                "ID": { "type": "string" },
+                "TITLE": { "type": "string" },
+                "NAME": { "type": "string" },
+                "STATUS_ID": { "type": "string" }
+              }
+            }
+          }
+        },
+        "ts": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

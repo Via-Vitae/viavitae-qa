@@ -1,0 +1,24 @@
+[
+  {
+    "id": "parish_a1b2c3d4",
+    "name": "Vilnius Šv. Kazimiero parapija",
+    "diocese": "vilnius",
+    "address": { "street": "Gedimino pr. 12", "city": "Vilnius", "postal_code": "LT-01103" },
+    "priest": { "first_name": "Jonas", "last_name": "Petraitis", "title": "kunigas" },
+    "phone": "+37060000001",
+    "email": "parapija.vilnius@test.viavitae.com",
+    "active": true,
+    "member_count": 4500
+  },
+  {
+    "id": "parish_e5f6g7h8",
+    "name": "Kaunas Šv. Mikalojaus parapija",
+    "diocese": "kaunas",
+    "address": { "street": "Rotušės a. 1", "city": "Kaunas", "postal_code": "LT-44279" },
+    "priest": { "first_name": "Tomas", "last_name": "Kazlauskas", "title": "monsinjoras" },
+    "phone": "+37060000002",
+    "email": "parapija.kaunas@test.viavitae.com",
+    "active": true,
+    "member_count": 3200
+  }
+]

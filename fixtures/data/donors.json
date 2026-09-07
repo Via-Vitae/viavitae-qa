@@ -1,0 +1,28 @@
+[
+  {
+    "id": "donor_x1y2z3w4",
+    "first_name": "Ona",
+    "last_name": "Jonauskaitė",
+    "email": "ona.jonauskaite@example.com",
+    "phone": "+37061234567",
+    "address": { "street": "Laisvės al. 50", "city": "Kaunas", "postal_code": "LT-44247", "country": "LT" },
+    "created_at": "2024-03-15T10:30:00.000Z",
+    "total_donated_eur": 250.00,
+    "donation_count": 12,
+    "recurring": true,
+    "parish_id": "parish_a1b2c3d4"
+  },
+  {
+    "id": "donor_m5n6o7p8",
+    "first_name": "Petras",
+    "last_name": "Stankevičius",
+    "email": "petras.stankevicius@example.com",
+    "phone": "+37069876543",
+    "address": { "street": "S. Daukanto g. 8", "city": "Vilnius", "postal_code": "LT-03104", "country": "LT" },
+    "created_at": "2025-01-10T14:00:00.000Z",
+    "total_donated_eur": 75.50,
+    "donation_count": 3,
+    "recurring": false,
+    "parish_id": "parish_e5f6g7h8"
+  }
+]

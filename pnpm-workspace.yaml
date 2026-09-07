@@ -1,0 +1,12 @@
+# pnpm-workspace.yaml — viavitae-qa
+# Each workspace is an independent test suite with its own package.json and
+# dependencies. Turborepo orchestrates cross-workspace pipelines.
+
+packages:
+  - "e2e"
+  - "load"
+  - "a11y"
+  - "budgets"
+  - "fixtures"
+  - "contract"
+  - "performance"

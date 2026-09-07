@@ -1,0 +1,15 @@
+{
+  "_comment": "URLs per template + agency pages for nightly Lighthouse CI against staging.",
+  "urls": [
+    "/demo/assessment",
+    "/demo/donation",
+    "/demo/ai-assistant",
+    "/demo/sso-portal",
+    "/demo/store",
+    "/demo/cemetery-map",
+    "/demo/donor-portal",
+    "/demo/i18n",
+    "/pricing",
+    "/product"
+  ]
+}

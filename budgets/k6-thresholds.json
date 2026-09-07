@@ -1,0 +1,101 @@
+{
+  "_comment": "k6 load test thresholds. Imported by load/k6.config.js. All latencies in milliseconds. Change a value here → all k6 scenarios inherit.",
+  "thresholds": {
+    "http_req_duration": [
+      "p(95)<300",
+      "p(99)<800"
+    ],
+    "http_req_failed": [
+      "rate<0.001"
+    ],
+    "http_req_connecting": [
+      "p(95)<50"
+    ],
+    "http_req_tls_handshaking": [
+      "p(95)<100"
+    ],
+    "iteration_duration": [
+      "p(95)<2000"
+    ]
+  },
+  "per_endpoint": {
+    "GET /v1/parishes": {
+      "p95": 200,
+      "p99": 500,
+      "error_rate": 0.001,
+      "rps_target": 200
+    },
+    "GET /v1/parishes/:id": {
+      "p95": 150,
+      "p99": 400,
+      "error_rate": 0.001,
+      "rps_target": 300
+    },
+    "POST /v1/assessments": {
+      "p95": 500,
+      "p99": 1200,
+      "error_rate": 0.005,
+      "rps_target": 50
+    },
+    "POST /v1/donations": {
+      "p95": 600,
+      "p99": 1500,
+      "error_rate": 0.005,
+      "rps_target": 30
+    },
+    "POST /v1/webhooks/stripe": {
+      "p95": 300,
+      "p99": 800,
+      "error_rate": 0.001,
+      "rps_target": 100
+    },
+    "GET /v1/health": {
+      "p95": 50,
+      "p99": 100,
+      "error_rate": 0.0,
+      "rps_target": 500
+    }
+  },
+  "scenarios": {
+    "api-baseline": {
+      "executor": "constant-vus",
+      "vus": 10,
+      "duration": "5m",
+      "description": "All /v1 endpoints at moderate load — p95 gates"
+    },
+    "assessment-spike": {
+      "executor": "ramping-vus",
+      "start_vus": 0,
+      "stages": [
+        { "duration": "1m", "target": 50 },
+        { "duration": "3m", "target": 100 },
+        { "duration": "1m", "target": 0 }
+      ],
+      "description": "Funnel under 10× spike — campaign simulation"
+    },
+    "donation-sustained": {
+      "executor": "constant-arrival-rate",
+      "rate": 20,
+      "time_unit": "1s",
+      "duration": "30m",
+      "pre_allocated_vus": 100,
+      "description": "30-min sustained checkout load, SCA path included"
+    },
+    "demo-browse": {
+      "executor": "constant-vus",
+      "vus": 20,
+      "duration": "10m",
+      "description": "Simulated parishioner browsing demo templates"
+    },
+    "gis-search": {
+      "executor": "ramping-vus",
+      "start_vus": 0,
+      "stages": [
+        { "duration": "2m", "target": 30 },
+        { "duration": "5m", "target": 30 },
+        { "duration": "1m", "target": 0 }
+      ],
+      "description": "Map parcel search concurrency — tile server load"
+    }
+  }
+}

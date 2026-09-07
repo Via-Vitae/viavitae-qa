@@ -1,0 +1,17 @@
+{
+  "id": "evt_test_synthetic000000000001",
+  "object": "event",
+  "type": "payment_intent.succeeded",
+  "data": {
+    "object": {
+      "id": "pi_test_synthetic000000000001",
+      "amount": 5000,
+      "currency": "eur",
+      "status": "succeeded",
+      "metadata": {
+        "parish_id": "parish_a1b2c3d4",
+        "donor_id": "donor_x1y2z3w4"
+      }
+    }
+  }
+}

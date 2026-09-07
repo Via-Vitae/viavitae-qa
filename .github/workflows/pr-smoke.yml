@@ -1,0 +1,177 @@
+name: PR smoke
+
+# Fast PR feedback — target under 10 minutes.
+#
+# Runs on every pull request:
+#   1. Playwright @smoke specs (subset of full e2e, critical paths only)
+#   2. Performance budgets check (Lighthouse budgets against staging)
+#   3. axe accessibility scan on one page per affected demo template
+#
+# This is intentionally narrow. The full matrix runs nightly via nightly-e2e.yml.
+# Staging URLs come from the "staging" GitHub Environment.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "pr-smoke-${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9.15.0"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # smoke — Playwright @smoke specs against staging
+  # ---------------------------------------------------------------------------
+  smoke:
+    name: Playwright @smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Staging health check
+        env:
+          STAGING_API_URL: ${{ vars.STAGING_API_URL }}
+          STAGING_WEB_URL: ${{ vars.STAGING_WEB_URL }}
+        run: |
+          set -euo pipefail
+          for url in "${STAGING_API_URL}/health" "${STAGING_WEB_URL}"; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$url" || echo "000")
+            if [ "$code" != "200" ] && [ "$code" != "301" ] && [ "$code" != "302" ]; then
+              echo "::error::Staging health check failed: ${url} returned ${code}. Skipping smoke tests."
+              exit 1
+            fi
+            echo "healthy: ${url} (${code})"
+          done
+
+      - name: Run @smoke specs (chromium only)
+        env:
+          BASE_URL_DEMO_ASSESSMENT: ${{ vars.BASE_URL_DEMO_ASSESSMENT }}
+          BASE_URL_DEMO_DONATION: ${{ vars.BASE_URL_DEMO_DONATION }}
+          BASE_URL_DEMO_AI: ${{ vars.BASE_URL_DEMO_AI }}
+          BASE_URL_DEMO_SSO: ${{ vars.BASE_URL_DEMO_SSO }}
+          BASE_URL_DEMO_RESET: ${{ vars.BASE_URL_DEMO_RESET }}
+          KEYCLOAK_TEST_REALM: ${{ vars.KEYCLOAK_TEST_REALM }}
+          MAILHOG_URL: ${{ vars.MAILHOG_URL }}
+        run: pnpm exec playwright test --grep @smoke --project=chromium
+
+      - name: Upload smoke test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-smoke-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  # ---------------------------------------------------------------------------
+  # budgets — Lighthouse budgets check against staging
+  # ---------------------------------------------------------------------------
+  budgets:
+    name: Performance budgets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lighthouse budgets check
+        env:
+          STAGING_WEB_URL: ${{ vars.STAGING_WEB_URL }}
+        run: |
+          set -euo pipefail
+          # Validate that budgets/lighthouse-budgets.json is internally consistent
+          pnpm test:budgets
+          echo "::notice::Budget schema validated. Full Lighthouse CI runs nightly."
+
+  # ---------------------------------------------------------------------------
+  # a11y — axe scan on one page per affected demo template
+  # ---------------------------------------------------------------------------
+  a11y:
+    name: axe accessibility scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run axe on affected templates
+        env:
+          BASE_URL_DEMO_ASSESSMENT: ${{ vars.BASE_URL_DEMO_ASSESSMENT }}
+          BASE_URL_DEMO_DONATION: ${{ vars.BASE_URL_DEMO_DONATION }}
+        run: |
+          set -euo pipefail
+          # Run the templates-axe spec limited to critical routes.
+          # Full axe suite runs nightly; PR runs one page per affected template.
+          pnpm exec playwright test specs/templates-axe.spec.ts --project=chromium || {
+            echo "::error::axe found WCAG 2.2 AA violations. Fix before merging."
+            exit 1
+          }
+
+      - name: Upload axe report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: axe-smoke-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14

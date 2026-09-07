@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qa.viavitae.com/schemas/parish.schema.json",
+  "title": "Fictional Parish",
+  "description": "Schema for synthetic parish entities. All data is fictional — no real parishes.",
+  "type": "object",
+  "required": ["id", "name", "diocese", "address", "priest", "active"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^parish_[a-z0-9]{8}$" },
+    "name": { "type": "string", "minLength": 3, "maxLength": 100 },
+    "diocese": { "type": "string", "enum": ["vilnius", "kaunas", "siauliai", "panevezys", "telšiai", "vilkaviškis"] },
+    "address": {
+      "type": "object",
+      "required": ["street", "city", "postal_code"],
+      "properties": {
+        "street": { "type": "string" },
+        "city": { "type": "string" },
+        "postal_code": { "type": "string", "pattern": "^LT-[0-9]{5}$" }
+      }
+    },
+    "priest": {
+      "type": "object",
+      "required": ["first_name", "last_name", "title"],
+      "properties": {
+        "first_name": { "type": "string" },
+        "last_name": { "type": "string" },
+        "title": { "type": "string", "enum": ["kunigas", "monsinjoras", "prelatas"] }
+      }
+    },
+    "phone": { "type": "string", "pattern": "^\\+370[0-9]{7,8}$" },
+    "email": { "type": "string", "format": "email" },
+    "active": { "type": "boolean" },
+    "member_count": { "type": "integer", "minimum": 0, "maximum": 50000 }
+  },
+  "additionalProperties": false
+}

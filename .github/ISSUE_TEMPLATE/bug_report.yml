@@ -1,0 +1,125 @@
+name: Bug report
+description: Report a defect in a test suite, fixture, budget or CI workflow. For security vulnerabilities, use SECURITY.md instead.
+title: "bug(<scope>): "
+labels: ["bug", "triage"]
+projects: ["Via-Vitae/1"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Stop — is this a security vulnerability?
+        **Do not file a public issue for a security problem.**
+        Report privately to **security@viavitae.com**. See [SECURITY.md](../../SECURITY.md).
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - "critical — CI completely broken, all suites blocked"
+        - "high — suite cannot run, no workaround"
+        - "medium — suite impaired, workaround exists"
+        - "low — cosmetic, assertion message, or documentation error"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected-suite
+    attributes:
+      label: Affected suite
+      description: Which test suite or workspace is affected?
+      options:
+        - "e2e — Playwright end-to-end"
+        - "contract — OpenAPI / schema contract tests"
+        - "load — k6 performance"
+        - "a11y — axe accessibility"
+        - "performance — Lighthouse CI"
+        - "fixtures — synthetic data or validator"
+        - "budgets — performance thresholds"
+        - "unit — fast logic tests"
+        - "ci — workflow or pipeline"
+        - "other"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: flaky
+    attributes:
+      label: Flaky?
+      description: Has this test failed intermittently (passes on retry without code changes)?
+      options:
+        - "no — fails consistently"
+        - "yes — flaky (2-3 times in last 7 days)"
+        - "yes — frequently flaky (4+ times in last 7 days)"
+        - "unknown — first occurrence"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Affected version
+      placeholder: "commit SHA or branch"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - "CI (PR)"
+        - "CI (nightly)"
+        - "staging"
+        - "local development"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Run suite ...
+        2. Observe ...
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and evidence
+      description: "**PII scrub required.** Remove names, emails, tokens, personal data."
+      render: shell
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: This is not a security vulnerability.
+          required: true
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: Everything I pasted has been scrubbed of personal data and secrets.
+          required: true

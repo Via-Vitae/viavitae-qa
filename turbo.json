@@ -1,0 +1,26 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": [".env", "tsconfig.json", "playwright.config.ts"],
+  "tasks": {
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": []
+    },
+    "typecheck": {
+      "dependsOn": ["^typecheck"],
+      "outputs": []
+    },
+    "test": {
+      "dependsOn": ["^test"],
+      "outputs": ["test-results/**", "playwright-report/**"]
+    },
+    "test:smoke": {
+      "dependsOn": ["^test"],
+      "outputs": ["test-results/**"]
+    },
+    "validate": {
+      "dependsOn": ["^validate"],
+      "outputs": []
+    }
+  }
+}

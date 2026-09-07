@@ -1,0 +1,39 @@
+{
+  "name": "@via-vitae/qa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cross-repo testing assets for the ViaVitae platform",
+  "license": "UNLICENSED",
+  "author": "ViaVitae IT Technologies",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "lint": "eslint . --ext .ts,.tsx,.js && prettier --check . && markdownlint '**/*.md' --ignore node_modules",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js --fix && prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "node --test unit/*.spec.ts",
+    "test:fixtures": "pnpm --filter @via-vitae/qa-fixtures test",
+    "test:budgets": "node --test unit/budget-schema.spec.ts",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:e2e": "playwright test",
+    "test:a11y": "pnpm --filter @via-vitae/qa-a11y test",
+    "test:load": "pnpm --filter @via-vitae/qa-load test",
+    "test:contract": "pnpm --filter @via-vitae/qa-contract test",
+    "test:performance": "pnpm --filter @via-vitae/qa-performance test",
+    "test:all": "pnpm -r test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "markdownlint-cli": "^0.42.0",
+    "prettier": "^3.4.0",
+    "typescript": "^5.6.0"
+  }
+}

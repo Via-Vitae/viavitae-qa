@@ -1,0 +1,10 @@
+{
+  "_comment": "Production URLs for weekly Lighthouse CI. READONLY — no failure alerts, informational only.",
+  "urls": [
+    "/demo/assessment",
+    "/demo/donation",
+    "/demo/ai-assistant",
+    "/pricing",
+    "/product"
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022"],
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@fixtures/*": ["./fixtures/*"],
+      "@e2e/*": ["./e2e/*"],
+      "@contract/*": ["./contract/*"],
+      "@a11y/*": ["./a11y/*"],
+      "@load/*": ["./load/*"]
+    }
+  },
+  "include": [
+    "e2e/**/*.ts",
+    "contract/**/*.ts",
+    "a11y/**/*.ts",
+    "fixtures/**/*.ts",
+    "unit/**/*.ts",
+    "playwright.config.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test-results",
+    "playwright-report",
+    "load/**/*.js"
+  ]
+}

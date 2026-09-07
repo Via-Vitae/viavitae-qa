@@ -1,0 +1,12 @@
+{
+  "event": "ONCRMLEADADD",
+  "data": {
+    "FIELDS": {
+      "ID": "12345",
+      "TITLE": "Naujas donoras: Ona Jonauskaitė",
+      "NAME": "Ona",
+      "STATUS_ID": "NEW"
+    }
+  },
+  "ts": "2025-06-15T08:30:00.000Z"
+}

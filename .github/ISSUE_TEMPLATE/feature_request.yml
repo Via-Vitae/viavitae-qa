@@ -1,0 +1,107 @@
+name: Feature request
+description: Propose a new test suite, budget change, or QA infrastructure improvement.
+title: "feat(<scope>): "
+labels: ["enhancement", "triage"]
+projects: ["Via-Vitae/1"]
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What gap in test coverage, budget enforcement or QA workflow needs filling?
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      render: markdown
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      render: markdown
+    validations:
+      required: true
+
+  - type: dropdown
+    id: which-suite
+    attributes:
+      label: Which suite does this affect?
+      options:
+        - "new suite (none of the existing ones)"
+        - "e2e — Playwright end-to-end"
+        - "contract — API contract tests"
+        - "load — k6 performance"
+        - "a11y — accessibility"
+        - "performance — Lighthouse CI"
+        - "fixtures — synthetic data"
+        - "budgets — performance thresholds"
+        - "unit — fast logic tests"
+        - "ci — workflow or pipeline"
+        - "cross-cutting (multiple suites)"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: budget-impact
+    attributes:
+      label: Budget impact
+      description: Does this change any performance threshold in budgets/?
+      options:
+        - "no — no budget change"
+        - "yes — tightens a threshold (harder to pass)"
+        - "yes — relaxes a threshold (easier to pass) — justification required"
+        - "yes — adds a new budget metric"
+        - "unknown — needs investigation"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: personal-data
+    attributes:
+      label: Does this involve personal data?
+      options:
+        - "no — synthetic data only"
+        - "possibly — needs DPO assessment"
+        - "yes — DPIA required before implementation"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Estimated scope
+      options:
+        - "small — under a day, one PR"
+        - "medium — a few days, 2-4 PRs"
+        - "large — needs design note or ADR first"
+        - "epic — needs decomposition"
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      render: markdown
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      options:
+        - label: I have searched existing issues and this is not a duplicate.
+          required: true
+        - label: I have described the problem, not only my preferred solution.
+          required: true
+        - label: I have not included any personal data, secret or credential.
+          required: true

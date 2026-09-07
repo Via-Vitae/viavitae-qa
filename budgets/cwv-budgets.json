@@ -1,0 +1,73 @@
+{
+  "_comment": "Core Web Vitals field data thresholds per demo template. CrUX-style: these are the PASS thresholds for field data. Values in milliseconds unless noted.",
+  "templates": {
+    "assessment": {
+      "LCP": 2500,
+      "INP": 200,
+      "CLS": 0.1,
+      "FCP": 1800,
+      "TTFB": 800
+    },
+    "donation": {
+      "LCP": 2500,
+      "INP": 200,
+      "CLS": 0.05,
+      "FCP": 1800,
+      "TTFB": 800
+    },
+    "ai-assistant": {
+      "LCP": 3000,
+      "INP": 300,
+      "CLS": 0.1,
+      "FCP": 2000,
+      "TTFB": 800
+    },
+    "sso-portal": {
+      "LCP": 2500,
+      "INP": 200,
+      "CLS": 0.1,
+      "FCP": 1800,
+      "TTFB": 600
+    },
+    "store": {
+      "LCP": 2500,
+      "INP": 200,
+      "CLS": 0.1,
+      "FCP": 1800,
+      "TTFB": 800
+    },
+    "cemetery-map": {
+      "LCP": 3500,
+      "INP": 300,
+      "CLS": 0.15,
+      "FCP": 2500,
+      "TTFB": 1000
+    },
+    "donor-portal": {
+      "LCP": 2500,
+      "INP": 200,
+      "CLS": 0.1,
+      "FCP": 1800,
+      "TTFB": 800
+    },
+    "i18n": {
+      "LCP": 2500,
+      "INP": 200,
+      "CLS": 0.1,
+      "FCP": 1800,
+      "TTFB": 800
+    },
+    "reset": {
+      "LCP": 1800,
+      "INP": 100,
+      "CLS": 0.0,
+      "FCP": 1200,
+      "TTFB": 400
+    }
+  },
+  "rating_thresholds": {
+    "good": { "LCP": 2500, "INP": 200, "CLS": 0.1 },
+    "needs_improvement": { "LCP": 4000, "INP": 500, "CLS": 0.25 },
+    "poor_above": "anything above needs_improvement is poor"
+  }
+}

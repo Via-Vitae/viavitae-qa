@@ -1,0 +1,13 @@
+{
+  "dashboard": {
+    "title": "ViaVitae QA — k6 Load Test Results",
+    "uid": "viavitae-qa-k6",
+    "tags": ["viavitae", "qa", "k6"],
+    "panels": [
+      { "title": "Response Time (p95)", "type": "graph", "datasource": "Prometheus" },
+      { "title": "Error Rate", "type": "graph", "datasource": "Prometheus" },
+      { "title": "Requests per Second", "type": "graph", "datasource": "Prometheus" }
+    ]
+  },
+  "_note": "Imports into Grafana managed by viavitae-infra/monitoring."
+}

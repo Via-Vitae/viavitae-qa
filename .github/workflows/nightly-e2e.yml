@@ -1,0 +1,354 @@
+name: Nightly e2e
+
+# Full nightly test matrix — runs against staging after business hours.
+#
+# Schedule: Monday–Friday 02:00 Europe/Vilnius (00:00 UTC winter, 23:00 UTC summer).
+# Cron is always UTC; the DST shift is expected.
+#
+# Jobs:
+#   health-check   — verify staging is reachable before running the full matrix
+#   e2e            — Playwright full suite, 3 browsers, sharded 1/4..4/4
+#   load           — k6 baseline scenario against staging API
+#   a11y           — Full axe suite (all templates, all routes)
+#   performance    — Lighthouse CI against staging URLs
+#   report         — Aggregate results, publish HTML artifact, push to Loki,
+#                    fire Alertmanager on failure
+#
+# Staging URLs and monitoring secrets come from the "staging" GitHub Environment.
+
+on:
+  schedule:
+    # Mon–Fri 02:00 Europe/Vilnius ≈ 00:00 UTC (winter) / 23:00 UTC prior day (summer).
+    - cron: "0 0 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "nightly-${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: false
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9.15.0"
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # health-check — gate the full matrix on staging availability
+  # ---------------------------------------------------------------------------
+  health-check:
+    name: Staging health check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    environment: staging
+    outputs:
+      staging-up: ${{ steps.check.outputs.staging-up }}
+    steps:
+      - name: Check staging availability
+        id: check
+        env:
+          STAGING_API_URL: ${{ vars.STAGING_API_URL }}
+          STAGING_WEB_URL: ${{ vars.STAGING_WEB_URL }}
+        run: |
+          set -euo pipefail
+          api_ok=false; web_ok=false
+          api_code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "${STAGING_API_URL}/health" || echo "000")
+          web_code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "${STAGING_WEB_URL}" || echo "000")
+          [ "$api_code" = "200" ] && api_ok=true
+          [ "$web_code" = "200" ] || [ "$web_code" = "301" ] || [ "$web_code" = "302" ] && web_ok=true
+          if $api_ok && $web_ok; then
+            echo "staging-up=true" >> "$GITHUB_OUTPUT"
+            echo "Staging is available (api=${api_code}, web=${web_code}). Proceeding."
+          else
+            echo "staging-up=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Staging is NOT available (api=${api_code}, web=${web_code}). Skipping nightly suite."
+          fi
+
+  # ---------------------------------------------------------------------------
+  # e2e — full Playwright matrix, sharded across 4 parallel jobs
+  # ---------------------------------------------------------------------------
+  e2e:
+    name: "e2e (${{ matrix.browser }}, shard ${{ matrix.shard }})"
+    needs: health-check
+    if: needs.health-check.outputs.staging-up == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: staging
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, mobile-chrome]
+        shard: ["1/4", "2/4", "3/4", "4/4"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: Run full e2e suite
+        env:
+          BASE_URL_DEMO_ASSESSMENT: ${{ vars.BASE_URL_DEMO_ASSESSMENT }}
+          BASE_URL_DEMO_DONATION: ${{ vars.BASE_URL_DEMO_DONATION }}
+          BASE_URL_DEMO_AI: ${{ vars.BASE_URL_DEMO_AI }}
+          BASE_URL_DEMO_SSO: ${{ vars.BASE_URL_DEMO_SSO }}
+          BASE_URL_DEMO_RESET: ${{ vars.BASE_URL_DEMO_RESET }}
+          BASE_URL_DEMO_STORE: ${{ vars.BASE_URL_DEMO_STORE }}
+          BASE_URL_DEMO_CEMETERY: ${{ vars.BASE_URL_DEMO_CEMETERY }}
+          BASE_URL_DEMO_PORTAL: ${{ vars.BASE_URL_DEMO_PORTAL }}
+          BASE_URL_DEMO_I18N: ${{ vars.BASE_URL_DEMO_I18N }}
+          KEYCLOAK_TEST_REALM: ${{ vars.KEYCLOAK_TEST_REALM }}
+          MAILHOG_URL: ${{ vars.MAILHOG_URL }}
+          NO_PII_ACK: "true"
+        run: |
+          pnpm exec playwright test \
+            --project=${{ matrix.browser }} \
+            --shard=${{ matrix.shard }} \
+            --reporter=html,json
+
+      - name: Upload shard report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: "e2e-${{ matrix.browser }}-shard-${{ strategy.job-index }}"
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # load — k6 baseline against staging API
+  # ---------------------------------------------------------------------------
+  load:
+    name: k6 load baseline
+    needs: health-check
+    if: needs.health-check.outputs.staging-up == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: staging
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run k6 api-baseline scenario
+        env:
+          STAGING_API_URL: ${{ vars.STAGING_API_URL }}
+        run: pnpm test:load -- --scenario api-baseline
+
+      - name: Upload k6 results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-results
+          path: |
+            load/results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # a11y — full axe suite
+  # ---------------------------------------------------------------------------
+  a11y:
+    name: Full axe accessibility
+    needs: health-check
+    if: needs.health-check.outputs.staging-up == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: staging
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run full axe suite
+        env:
+          BASE_URL_DEMO_ASSESSMENT: ${{ vars.BASE_URL_DEMO_ASSESSMENT }}
+          BASE_URL_DEMO_DONATION: ${{ vars.BASE_URL_DEMO_DONATION }}
+          BASE_URL_DEMO_AI: ${{ vars.BASE_URL_DEMO_AI }}
+        run: pnpm test:a11y
+
+      - name: Upload axe report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: axe-nightly-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # performance — Lighthouse CI against staging
+  # ---------------------------------------------------------------------------
+  performance:
+    name: Lighthouse CI
+    needs: health-check
+    if: needs.health-check.outputs.staging-up == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: staging
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Lighthouse CI
+        env:
+          STAGING_WEB_URL: ${{ vars.STAGING_WEB_URL }}
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+        run: pnpm test:performance
+
+      - name: Upload Lighthouse report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: |
+            performance/.lighthouseci/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # ---------------------------------------------------------------------------
+  # report — aggregate, publish to Loki, alert on failure
+  # ---------------------------------------------------------------------------
+  report:
+    name: Nightly report
+    needs: [e2e, load, a11y, performance]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: staging
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Evaluate nightly results
+        id: evaluate
+        run: |
+          set -uo pipefail
+          results='${{ toJSON(needs) }}'
+          printf '%s\n' "$results" | jq -r 'to_entries[] | "  \(.key): \(.value.result)"'
+          failed=$(printf '%s\n' "$results" | jq '[to_entries[] | select(.value.result != "success" and .value.result != "skipped")] | length')
+          echo "failed=${failed}" >> "$GITHUB_OUTPUT"
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::${failed} nightly job(s) failed."
+          else
+            echo "All nightly jobs passed."
+          fi
+
+      - name: Push summary to Loki
+        if: always()
+        env:
+          LOKI_URL: ${{ secrets.LOKI_URL }}
+          LOKI_TOKEN: ${{ secrets.LOKI_TOKEN }}
+        run: |
+          set -uo pipefail
+          if [ -z "${LOKI_URL:-}" ] || [ -z "${LOKI_TOKEN:-}" ]; then
+            echo "::warning::Loki endpoint not configured. Skipping log push."
+            exit 0
+          fi
+          results='${{ toJSON(needs) }}'
+          timestamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          payload=$(jq -n \
+            --arg ts "$timestamp" \
+            --argjson results "$results" \
+            '{streams: [{stream: {job: "viavitae-qa", suite: "nightly", repo_target: "staging"}, values: [[$ts, $results | tostring]]}]}')
+          curl -sf -X POST "${LOKI_URL}/loki/api/v1/push" \
+            -H "Authorization: Bearer ${LOKI_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$payload" || echo "::warning::Could not push to Loki. Check LOKI_URL secret."
+
+      - name: Alert on failure
+        if: failure() && steps.evaluate.outputs.failed != '0'
+        env:
+          ALERTMANAGER_URL: ${{ secrets.ALERTMANAGER_URL }}
+        run: |
+          set -uo pipefail
+          if [ -z "${ALERTMANAGER_URL:-}" ]; then
+            echo "::warning::Alertmanager not configured. Skipping alert."
+            exit 0
+          fi
+          curl -sf -X POST "${ALERTMANAGER_URL}/api/v2/alerts" \
+            -H "Content-Type: application/json" \
+            -d "[{
+              \"labels\": {
+                \"alertname\": \"viavitae-qa-nightly-failure\",
+                \"severity\": \"warning\",
+                \"repo\": \"viavitae-qa\",
+                \"run_id\": \"${{ github.run_id }}\",
+                \"run_url\": \"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\"
+              },
+              \"annotations\": {
+                \"summary\": \"Nightly e2e suite failed\",
+                \"description\": \"${{ steps.evaluate.outputs.failed }} job(s) failed. See run details.\"
+              }
+            }]" || echo "::warning::Could not post to Alertmanager. Check ALERTMANAGER_URL secret."
+
+      - name: Upload consolidated report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-consolidated-report
+          path: |
+            playwright-report/
+            test-results/
+            load/results/
+            performance/.lighthouseci/
+          if-no-files-found: ignore
+          retention-days: 30

@@ -1,0 +1,20 @@
+{
+  "name": "@via-vitae/qa-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright end-to-end suites for all ViaVitae demo templates.",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.48.0",
+    "@via-vitae/qa-fixtures": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
+}

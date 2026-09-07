@@ -1,0 +1,73 @@
+name: CodeQL
+
+# CodeQL static analysis for viavitae-qa.
+#
+# This repository is purely Node.js/TypeScript — no Python legs run.
+# The CodeQL matrix covers javascript-typescript only.
+#
+# Runs on push to main, pull requests, and weekly (Saturday 06:00 Europe/Vilnius).
+# Results are uploaded to the GitHub Security tab via security-events: write.
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+  schedule:
+    # Weekly deep scan — Saturdays 06:00 Europe/Vilnius (04:00 UTC winter,
+    # 03:00 UTC summer). Cron is always UTC; the DST shift is expected.
+    - cron: "0 4 * * 6"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+concurrency:
+  group: "codeql-${{ github.workflow }}-${{ github.ref }}"
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "22"
+  PNPM_VERSION: "9.15.0"
+
+jobs:
+  analyze:
+    name: CodeQL analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        # javascript-typescript covers both JS and TS in a single CodeQL run.
+        # No Python language — this repo has no Python source.
+        language: ["javascript-typescript"]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"

@@ -1,0 +1,17 @@
+{
+  "ci": {
+    "collect": {
+      "url": [],
+      "numberOfRuns": 3,
+      "settings": { "chromeFlags": "--no-sandbox" }
+    },
+    "assert": {
+      "assertMatrix": []
+    },
+    "upload": {
+      "target": "temporary-public-storage",
+      "githubToken": "$LHCI_GITHUB_APP_TOKEN"
+    },
+    "_note": "URLs and assertions imported from budgets/lighthouse-budgets.json at runtime."
+  }
+}

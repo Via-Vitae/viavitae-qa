@@ -1,0 +1,8 @@
+{
+  "orderid": "TEST-SYNTHETIC01",
+  "status": "1",
+  "amount": "2500",
+  "currency": "EUR",
+  "test": "1",
+  "sign": "synthetic_signature_not_a_real_value_0000000000000000000000000000000000000000000000000000000000000000"
+}

@@ -1,0 +1,36 @@
+# CODEOWNERS — default owner mapping
+#
+# Each line is a path pattern followed by one or more owners. Later patterns take
+# precedence over earlier ones, so the most specific rule wins.
+#
+# ---------------------------------------------------------------------------
+# RULE R2 — CODEOWNERS IMMUTABILITY
+#
+# 1. This file is NEVER empty. An empty CODEOWNERS silently removes every
+#    required reviewer. The `*` rule below must always resolve to at least
+#    @JourneyOfLife @IterVitae.
+# 2. Overrides are allowed. Narrower path rules may add or replace owners.
+# 3. Removal requires compliance team approval.
+# ---------------------------------------------------------------------------
+
+# --- Default owner for everything -------------------------------------------
+*                           @JourneyOfLife @IterVitae
+
+# --- Performance budgets (single source of truth — cross-repo impact) -------
+/budgets/                   @JourneyOfLife @IterVitae
+
+# --- Synthetic fixtures (PII governance — GDPR safeguard) -------------------
+/fixtures/                  @JourneyOfLife @IterVitae
+
+# --- CI/CD and automation ---------------------------------------------------
+/.github/                   @JourneyOfLife @IterVitae
+/.github/workflows/         @JourneyOfLife @IterVitae
+/.github/CODEOWNERS         @JourneyOfLife @IterVitae
+
+# --- Governance and compliance ----------------------------------------------
+/docs/DPIA-template.md      @JourneyOfLife @IterVitae
+/docs/architecture.md       @JourneyOfLife @IterVitae
+/LICENSE                    @JourneyOfLife @IterVitae
+/SECURITY.md                @JourneyOfLife @IterVitae
+/QODER.md                   @JourneyOfLife @IterVitae
+/CONTRIBUTING.md            @JourneyOfLife @IterVitae
