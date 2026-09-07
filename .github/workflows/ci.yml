@@ -163,7 +163,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Trivy filesystem scan
-        uses: aquasecurity/trivy-action@d2a0b60797ff03db6132bd4e2b2b293f9b37081297 # master
+        uses: aquasecurity/trivy-action@d2a0b60797ff03db6132bd4e2b293f9b37081297 # master
         with:
           scan-type: "fs"
           scan-ref: "."
