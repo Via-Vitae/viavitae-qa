@@ -107,11 +107,14 @@ jobs:
         run: |
           set -euo pipefail
           pnpm exec playwright test --list --reporter=line 2>&1 | tee tests.listed || true
-          # Count specs that Playwright would actually run
-          count=$(grep -cE '\.spec\.ts' tests.listed || echo 0)
-          echo "Playwright lists ${count} spec file(s) across all projects"
-          if [ "${count}" -lt 14 ]; then
-            echo "::error::Expected at least 14 spec files but Playwright listed ${count}. A regex change may have orphaned specs."
+          # Count unique spec files on disk vs unique spec files Playwright lists.
+          # Specs matched by multiple projects appear multiple times in --list output,
+          # so we must compare unique counts on both sides.
+          expected=$(find e2e/specs -name '*.spec.ts' | wc -l | tr -d ' ')
+          listed=$(grep -oE '[^ ]+\.spec\.ts' tests.listed | sort -u | wc -l | tr -d ' ')
+          echo "Specs on disk: ${expected}; unique specs listed by Playwright: ${listed}"
+          if [ "${listed}" -ne "${expected}" ]; then
+            echo "::error::Playwright lists ${listed} unique spec files but ${expected} exist on disk. A testMatch regex may have orphaned specs (F10 class)."
             exit 1
           fi
           # Specifically verify demo specs are not silently skipped
