@@ -103,6 +103,25 @@ jobs:
       - name: URL list validation
         run: pnpm test:unit
 
+      - name: Verify all specs are matched by at least one project
+        run: |
+          set -euo pipefail
+          pnpm exec playwright test --list --reporter=line 2>&1 | tee tests.listed || true
+          # Count specs that Playwright would actually run
+          count=$(grep -cE '\.spec\.ts' tests.listed || echo 0)
+          echo "Playwright lists ${count} spec file(s) across all projects"
+          if [ "${count}" -lt 14 ]; then
+            echo "::error::Expected at least 14 spec files but Playwright listed ${count}. A regex change may have orphaned specs."
+            exit 1
+          fi
+          # Specifically verify demo specs are not silently skipped
+          if ! grep -q "demo-reset\|demo-templates" tests.listed; then
+            echo "::error::Demo specs (demos/) not matched by any project. Check testMatch regexes."
+            exit 1
+          fi
+          echo "All spec files accounted — no silent skips."
+
+
   # ---------------------------------------------------------------------------
   # sast — Semgrep TypeScript ruleset (container invocation)
   #
@@ -115,7 +134,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     container:
-      image: semgrep/semgrep
+      image: semgrep/semgrep@sha256:51c9f53a4fce0d55e9abd08d7b96968654248a4b1122e77f20e0a49c0072446c
     steps:
       - name: Check out repository
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4

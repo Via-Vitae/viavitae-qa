@@ -346,6 +346,33 @@ jobs:
           done
           exit "${failed}"
 
+
+      - name: Verify container images are digest-pinned
+        run: |
+          set -uo pipefail
+          unpinned=0
+          total=0
+          while IFS= read -r line; do
+            [ -z "$line" ] && continue
+            total=$((total + 1))
+            file=${line%%:*}
+            img=$(printf '%s' "$line" | sed -E 's/.*image:\s*//; s/[[:space:]]*$//')
+            # First-party GitHub-hosted runner images are maintained by GitHub.
+            case "$img" in
+              images*.githubusercontent.com*) continue ;;
+            esac
+            if ! printf '%s' "$img" | grep -qE '@sha256:[0-9a-f]{64}$'; then
+              echo "::error file=${file}::Container image '${img}' is not digest-pinned (R4 extension)."
+              unpinned=$((unpinned + 1))
+            fi
+          done < <(grep -rn --include='*.yml' -E '^\s*image:\s*\S+' .github/workflows | grep -v '^\s*#')
+          echo "container images checked: ${total}; unpinned: ${unpinned}"
+          if [ "${unpinned}" -ne 0 ]; then
+            echo "::error::${unpinned} container image(s) lack @sha256 digests."
+            echo "Resolve with: docker inspect --format='{{index .RepoDigests 0}}' <image>:<tag>"
+            exit 1
+          fi
+
   # ---------------------------------------------------------------------------
   # compliance-status — single required check for branch protection
   # ---------------------------------------------------------------------------

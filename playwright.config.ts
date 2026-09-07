@@ -58,12 +58,12 @@ export default defineConfig({
   projects: [
     {
       name: "web-chromium",
-      testMatch: /^(?!.*demo).*/,
+      testMatch: /^(?!.*demos/).*/,
       use: { ...devices["Desktop Chrome"], baseURL: webURL },
     },
     {
       name: "demo-chromium",
-      testMatch: /demo\/.*/,
+      testMatch: /demos\/.*/,
       use: { ...devices["Desktop Chrome"], baseURL: demoURL },
     },
     {
