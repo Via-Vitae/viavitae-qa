@@ -153,6 +153,17 @@ Because repositories in this organisation are deployed continuously from `main`,
 deployed production version is normally the latest. If you are running an older tag,
 upgrade before reporting a finding that has already been fixed.
 
+## Secret-scanning residual risk
+
+The TruffleHog gate runs with `--only-verified`, which suppresses findings
+that cannot be confirmed live (e.g., private keys and internal tokens with
+no verification endpoint). Residual risk: an unverifiable-but-real secret
+could pass the gate. Mitigations: (1) secrets are never committed by policy
+and CI fails on any *verified* finding; (2) pre-commit hooks run the same
+scanner locally; (3) any credential suspected of exposure is rotated first,
+history purge second — a leaked *live* secret is a rotation event regardless
+of what the scanner says.
+
 ## Contact
 
 | Role | Contact |

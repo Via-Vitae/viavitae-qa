@@ -3,26 +3,51 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * Playwright base configuration for viavitae-qa.
  *
- * Projects: chromium, firefox, mobile-chrome (mobile Safari requires a macOS
- * host and is not included in CI). Trace on first retry, screenshot only on
- * failure. Environment URLs come from .env (populated by GitHub Environments).
+ * Projects:
+ *   - web-chromium: funnel, commerce, AI, IAM, GIS, i18n, regression specs
+ *   - demo-chromium: demo template and reset specs
+ *   - firefox: regression only (EU public-sector clients)
+ *   - mobile-chrome: regression only (≥60% church-audience traffic)
+ *
+ * Trace on first retry, screenshot only on failure. Environment URLs come from
+ * GitHub Environments (populated as vars in the workflow).
  */
 
-const baseURL = process.env.BASE_URL_DEMO_BASILICA ?? "http://localhost:3000";
+const webURL = process.env.BASE_URL_WEB ?? "http://localhost:3000";
+const demoURL = process.env.BASE_URL_DEMO ?? "http://localhost:3001";
+
+/**
+ * Staging health-check: fail fast if the target is unreachable.
+ * Prevents the full nightly matrix from burning 20–40 runner-minutes when
+ * staging is down.
+ */
+async function stagingHealthCheck(): Promise<void> {
+  if (!process.env.CI) return; // local runs: developer's responsibility
+  const target = process.env.BASE_URL_WEB ?? demoURL;
+  const res = await fetch(`${target}/api/health`, {
+    signal: AbortSignal.timeout(10_000),
+  }).catch(() => null);
+  if (!res?.ok) {
+    throw new Error(
+      `[globalSetup] staging unreachable: ${target} — aborting suite before runner burn. ` +
+        `Check staging status or re-run with BASE_URL_WEB set correctly.`,
+    );
+  }
+}
 
 export default defineConfig({
   testDir: "./e2e/specs",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 2 : undefined,
   reporter: process.env.CI
     ? [["html", { open: "never" }], ["list"]]
     : [["html"], ["list"]],
   outputDir: "test-results",
+  globalSetup: stagingHealthCheck,
 
   use: {
-    baseURL,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
@@ -32,21 +57,26 @@ export default defineConfig({
 
   projects: [
     {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      name: "web-chromium",
+      testMatch: /^(?!.*demo).*/,
+      use: { ...devices["Desktop Chrome"], baseURL: webURL },
+    },
+    {
+      name: "demo-chromium",
+      testMatch: /demo\/.*/,
+      use: { ...devices["Desktop Chrome"], baseURL: demoURL },
     },
     {
       name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
+      testMatch: /regression\/.*/,
+      use: { ...devices["Desktop Firefox"], baseURL: webURL },
     },
     {
       name: "mobile-chrome",
-      use: { ...devices["Pixel 7"] },
+      testMatch: /regression\/.*/,
+      use: { ...devices["Pixel 7"], baseURL: webURL },
     },
   ],
-
-  /* Staging health-check: skip the full matrix if staging is unreachable. */
-  globalSetup: undefined,
 
   webServer: undefined, // Staging is remote; no local dev server needed.
 });

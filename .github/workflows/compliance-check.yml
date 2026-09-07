@@ -34,7 +34,6 @@ concurrency:
 
 env:
   NODE_VERSION: "22"
-  PNPM_VERSION: "9.15.0"
   # Licence policy. Anything not on the allow list fails the gate and is labelled
   # for manual review rather than being silently accepted.
   ALLOWED_LICENCES: "MIT Apache-2.0 BSD-2-Clause BSD-3-Clause 0BSD ISC CC0-1.0 Unlicense Proprietary"
@@ -51,14 +50,14 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Check out full history
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           # A secret introduced in an earlier commit and later removed is still a
           # breach: it is still in the history and still valid until rotated.
           fetch-depth: 0
 
       - name: TruffleHog — verify-only scan of full history
-        uses: trufflesecurity/trufflehog@main
+        uses: trufflesecurity/trufflehog@166bf18f3a3fe52a6db9e1770568f52a0c40ff07 # main
         with:
           # --only-verified confirms each secret is actually valid before reporting,
           # eliminating false positives. This is the org-standard mode (licence-free,
@@ -88,17 +87,15 @@ jobs:
       pull-requests: write
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Detect manifests
         id: manifests
@@ -182,7 +179,7 @@ jobs:
 
       - name: Upload licence reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: licence-reports
           path: |
@@ -211,7 +208,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Verify required governance files
         run: |
@@ -296,7 +293,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Verify every action reference is SHA-pinned
         run: |

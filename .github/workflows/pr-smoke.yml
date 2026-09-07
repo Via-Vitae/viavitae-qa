@@ -22,7 +22,6 @@ concurrency:
 
 env:
   NODE_VERSION: "22"
-  PNPM_VERSION: "9.15.0"
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -35,17 +34,15 @@ jobs:
     environment: staging
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -77,11 +74,11 @@ jobs:
           BASE_URL_DEMO_RESET: ${{ vars.BASE_URL_DEMO_RESET }}
           KEYCLOAK_TEST_REALM: ${{ vars.KEYCLOAK_TEST_REALM }}
           MAILHOG_URL: ${{ vars.MAILHOG_URL }}
-        run: pnpm exec playwright test --grep @smoke --project=chromium
+        run: pnpm exec playwright test --grep @smoke --project=web-chromium
 
       - name: Upload smoke test report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: playwright-smoke-report
           path: |
@@ -100,17 +97,15 @@ jobs:
     environment: staging
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -134,17 +129,15 @@ jobs:
     environment: staging
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -160,14 +153,14 @@ jobs:
           set -euo pipefail
           # Run the templates-axe spec limited to critical routes.
           # Full axe suite runs nightly; PR runs one page per affected template.
-          pnpm exec playwright test specs/templates-axe.spec.ts --project=chromium || {
+          pnpm exec playwright test specs/templates-axe.spec.ts --project=web-chromium || {
             echo "::error::axe found WCAG 2.2 AA violations. Fix before merging."
             exit 1
           }
 
       - name: Upload axe report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: axe-smoke-report
           path: |

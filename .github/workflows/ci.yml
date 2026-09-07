@@ -20,7 +20,6 @@ concurrency:
 
 env:
   NODE_VERSION: "22"
-  PNPM_VERSION: "9.15.0"
 
 jobs:
   # ---------------------------------------------------------------------------
@@ -32,23 +31,19 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: ESLint
-        run: pnpm exec eslint . --ext .ts,.tsx,.js
+        run: pnpm exec eslint .
 
       - name: Prettier
         run: pnpm exec prettier --check .
@@ -65,17 +60,13 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -92,17 +83,13 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -117,24 +104,24 @@ jobs:
         run: pnpm test:unit
 
   # ---------------------------------------------------------------------------
-  # sast — Semgrep TypeScript ruleset
+  # sast — Semgrep TypeScript ruleset (container invocation)
+  #
+  # The legacy returntocorp/semgrep-action@v1 is deprecated (unmaintained rules
+  # drift + supply-chain risk). The maintained approach is the official
+  # semgrep/semgrep Docker image with `semgrep ci` CLI invocation.
   # ---------------------------------------------------------------------------
   sast:
     name: SAST (Semgrep)
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    container:
+      image: semgrep/semgrep
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Semgrep scan
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: >-
-            p/typescript
-            p/security-audit
-        env:
-          SEMGREP_METRICS: "off"
+        run: semgrep ci --config p/typescript --config p/security-audit --metrics=off --error
 
   # ---------------------------------------------------------------------------
   # dependency-scan — Trivy filesystem (fail on CRITICAL)
@@ -145,23 +132,19 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: ${{ env.PNPM_VERSION }}
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Trivy filesystem scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@d2a0b60797ff03db6132bd4e2b2b293f9b37081297 # master
         with:
           scan-type: "fs"
           scan-ref: "."
