@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "k6 load test suites — staging only, prod banned.",
-  "scripts": { "test": "k6 run", "test:load": "k6 run" },
+  "scripts": {
+    "test": "k6 run",
+    "test:load": "k6 run"
+  },
   "devDependencies": {}
 }

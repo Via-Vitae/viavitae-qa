@@ -9,24 +9,24 @@
 
 ## DPIA-QA-000: Baseline assessment — synthetic-only test data
 
-| Field | Value |
-| --- | --- |
-| **Status** | Accepted |
-| **Owner** | `@JourneyOfLife` |
-| **Date** | 2026-09-07 |
-| **Review date** | 2027-09-07 (annual) |
-| **DPO consulted** | dpo@viavitae.com |
+| Field             | Value               |
+| ----------------- | ------------------- |
+| **Status**        | Accepted            |
+| **Owner**         | `@JourneyOfLife`    |
+| **Date**          | 2026-09-07          |
+| **Review date**   | 2027-09-07 (annual) |
+| **DPO consulted** | dpo@viavitae.com    |
 
 ### 1. Description of processing
 
-| Question | Answer |
-| --- | --- |
-| What personal data is processed? | **None.** All fixture data is synthetic. |
-| Who are the data subjects? | N/A — no real individuals are represented. |
-| What is the lawful basis? | N/A — no processing occurs. |
-| Where is data stored? | N/A |
-| How long is data retained? | N/A |
-| Who are the processors? | N/A |
+| Question                         | Answer                                     |
+| -------------------------------- | ------------------------------------------ |
+| What personal data is processed? | **None.** All fixture data is synthetic.   |
+| Who are the data subjects?       | N/A — no real individuals are represented. |
+| What is the lawful basis?        | N/A — no processing occurs.                |
+| Where is data stored?            | N/A                                        |
+| How long is data retained?       | N/A                                        |
+| Who are the processors?          | N/A                                        |
 
 ### 2. Necessity and proportionality
 
@@ -40,11 +40,11 @@ if any match is found.
 
 ### 3. Risks identified
 
-| Risk | Likelihood | Impact | Mitigation |
-| --- | --- | --- | --- |
-| Production data accidentally committed as fixture | Low | High | PII heuristic validator in CI; `.gitignore` covers `.env*`; PR checklist requires "No new PII in fixtures" confirmation |
-| Stripe test-mode keys in webhook fixtures | Low | Medium | Validator scans for `sk_live_`/`pk_live_` patterns; `reset.sh` pattern from viavitae-demos applied here |
-| Keycloak test credentials leaked | Low | Medium | Test realm completely isolated from production; credentials from GitHub Environments only |
+| Risk                                              | Likelihood | Impact | Mitigation                                                                                                              |
+| ------------------------------------------------- | ---------- | ------ | ----------------------------------------------------------------------------------------------------------------------- |
+| Production data accidentally committed as fixture | Low        | High   | PII heuristic validator in CI; `.gitignore` covers `.env*`; PR checklist requires "No new PII in fixtures" confirmation |
+| Stripe test-mode keys in webhook fixtures         | Low        | Medium | Validator scans for `sk_live_`/`pk_live_` patterns; `reset.sh` pattern from viavitae-demos applied here                 |
+| Keycloak test credentials leaked                  | Low        | Medium | Test realm completely isolated from production; credentials from GitHub Environments only                               |
 
 ### 4. Controls
 
@@ -71,26 +71,31 @@ processing begins.
 ```markdown
 ## DPIA-QA-NNN: <title>
 
-| Field | Value |
-| --- | --- |
-| **Status** | Proposed |
-| **Owner** | <handle> |
-| **Date** | <YYYY-MM-DD> |
-| **Review date** | <YYYY-MM-DD, max 1 year> |
-| **DPO consulted** | dpo@viavitae.com |
+| Field             | Value                    |
+| ----------------- | ------------------------ |
+| **Status**        | Proposed                 |
+| **Owner**         | <handle>                 |
+| **Date**          | <YYYY-MM-DD>             |
+| **Review date**   | <YYYY-MM-DD, max 1 year> |
+| **DPO consulted** | dpo@viavitae.com         |
 
 ### 1. Description of processing
+
 <What data, who, why, where, how long, which processors.>
 
 ### 2. Necessity and proportionality
+
 <Why this processing is needed, why less intrusive means are insufficient.>
 
 ### 3. Risks identified
+
 <Risk table: risk, likelihood, impact, mitigation.>
 
 ### 4. Controls
+
 <Technical and organisational controls.>
 
 ### 5. Conclusion
+
 <Go / no-go, conditions, review date.>
 ```

@@ -34,11 +34,5 @@
     "unit/**/*.ts",
     "playwright.config.ts"
   ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "test-results",
-    "playwright-report",
-    "load/**/*.js"
-  ]
+  "exclude": ["node_modules", "dist", "test-results", "playwright-report", "load/**/*.js"]
 }

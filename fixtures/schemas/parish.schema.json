@@ -8,7 +8,10 @@
   "properties": {
     "id": { "type": "string", "pattern": "^parish_[a-z0-9]{8}$" },
     "name": { "type": "string", "minLength": 3, "maxLength": 100 },
-    "diocese": { "type": "string", "enum": ["vilnius", "kaunas", "siauliai", "panevezys", "telšiai", "vilkaviškis"] },
+    "diocese": {
+      "type": "string",
+      "enum": ["vilnius", "kaunas", "siauliai", "panevezys", "telšiai", "vilkaviškis"]
+    },
     "address": {
       "type": "object",
       "required": ["street", "city", "postal_code"],

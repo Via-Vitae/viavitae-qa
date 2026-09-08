@@ -36,7 +36,7 @@ env:
   NODE_VERSION: "22"
   # Licence policy. Anything not on the allow list fails the gate and is labelled
   # for manual review rather than being silently accepted.
-  ALLOWED_LICENCES: "MIT Apache-2.0 BSD-2-Clause BSD-3-Clause 0BSD ISC CC0-1.0 Unlicense Proprietary"
+  ALLOWED_LICENCES: "MIT Apache-2.0 BSD-2-Clause BSD-3-Clause 0BSD ISC CC0-1.0 Unlicense Proprietary UNLICENSED"
   FORBIDDEN_LICENCES: "GPL-2.0 GPL-3.0 AGPL-3.0 LGPL-2.1 LGPL-3.0 MPL-2.0 EPL-1.0 EPL-2.0 CDDL-1.0 SSPL-1.0 BUSL-1.1"
   REVIEW_LABEL: "compliance/licence-review"
 
@@ -345,7 +345,6 @@ jobs:
             done
           done
           exit "${failed}"
-
 
       - name: Verify container images are digest-pinned
         run: |

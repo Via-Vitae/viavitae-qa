@@ -14,7 +14,10 @@
     "active": { "type": "boolean" },
     "features": {
       "type": "array",
-      "items": { "type": "string", "enum": ["donations", "assessment", "ai-assistant", "cemetery-map", "store", "sso"] }
+      "items": {
+        "type": "string",
+        "enum": ["donations", "assessment", "ai-assistant", "cemetery-map", "store", "sso"]
+      }
     },
     "locale": { "type": "string", "enum": ["lt", "en", "ru", "pl", "de"] },
     "contact_email": { "type": "string", "format": "email" }

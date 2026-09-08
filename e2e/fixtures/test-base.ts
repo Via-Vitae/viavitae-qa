@@ -13,8 +13,6 @@ import { test as base, expect, type Page } from "@playwright/test";
 type TestFixtures = {
   /** Auto-dismisses the consent banner if present. */
   consentDismissed: Page;
-  /** Locale helper — navigates with locale prefix. */
-  locale: (path: string, locale?: "lt" | "en" | "ru") => Promise<string>;
 };
 
 export const test = base.extend<TestFixtures>({
@@ -28,15 +26,6 @@ export const test = base.extend<TestFixtures>({
       // No banner — continue normally.
     }
     await use(page);
-  },
-
-  locale: async ({ page }, use) => {
-    const navigate = async (path: string, locale: "lt" | "en" | "ru" = "lt") => {
-      const url = `/${locale}${path}`;
-      await page.goto(url);
-      return url;
-    };
-    await use(navigate);
   },
 });
 

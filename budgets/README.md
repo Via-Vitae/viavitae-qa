@@ -10,11 +10,11 @@ workflows or direct import.
 
 ## Files
 
-| File | Consumed by | Purpose |
-| --- | --- | --- |
-| `lighthouse-budgets.json` | `performance/lighthouserc.json`, application repos' Lighthouse CI | LCP, CLS, TBT, TTI, FCP, resource sizes/counts per page path |
-| `cwv-budgets.json` | Monitoring dashboards, field data alerts | Core Web Vitals pass thresholds per demo template (CrUX-style) |
-| `k6-thresholds.json` | `load/k6.config.js`, all k6 scenarios | p95/p99 latency, error rate, RPS targets per endpoint + scenario definitions |
+| File                      | Consumed by                                                       | Purpose                                                                      |
+| ------------------------- | ----------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `lighthouse-budgets.json` | `performance/lighthouserc.json`, application repos' Lighthouse CI | LCP, CLS, TBT, TTI, FCP, resource sizes/counts per page path                 |
+| `cwv-budgets.json`        | Monitoring dashboards, field data alerts                          | Core Web Vitals pass thresholds per demo template (CrUX-style)               |
+| `k6-thresholds.json`      | `load/k6.config.js`, all k6 scenarios                             | p95/p99 latency, error rate, RPS targets per endpoint + scenario definitions |
 
 ## Rules
 
@@ -32,19 +32,19 @@ workflows or direct import.
 ### Lighthouse
 
 | Metric | Default | Assessment | Donation | AI Assistant |
-| --- | --- | --- | --- | --- |
-| LCP | < 1.8s | < 2.2s | < 2.0s | < 2.5s |
-| CLS | < 0.1 | < 0.1 | < 0.05 | < 0.1 |
-| TBT | < 200ms | < 300ms | < 200ms | < 400ms |
-| TTI | < 3.5s | < 3.5s | < 3.5s | < 3.5s |
+| ------ | ------- | ---------- | -------- | ------------ |
+| LCP    | < 1.8s  | < 2.2s     | < 2.0s   | < 2.5s       |
+| CLS    | < 0.1   | < 0.1      | < 0.05   | < 0.1        |
+| TBT    | < 200ms | < 300ms    | < 200ms  | < 400ms      |
+| TTI    | < 3.5s  | < 3.5s     | < 3.5s   | < 3.5s       |
 
 ### k6
 
-| Metric | Threshold |
-| --- | --- |
-| p95 latency | < 300ms |
-| p99 latency | < 800ms |
-| Error rate | < 0.1% |
+| Metric      | Threshold |
+| ----------- | --------- |
+| p95 latency | < 300ms   |
+| p99 latency | < 800ms   |
+| Error rate  | < 0.1%    |
 
 ### CWV
 

@@ -1,4 +1,4 @@
-import { type Page, type Locator } from "@playwright/test";
+import { type Page } from "@playwright/test";
 
 export class DonationPage {
   readonly page: Page;

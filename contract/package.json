@@ -4,7 +4,14 @@
   "private": true,
   "description": "Contract tests — API shape guarantees across ViaVitae repos.",
   "type": "module",
-  "scripts": { "test": "node --import tsx --test *.spec.ts **/*.spec.ts" },
-  "dependencies": { "ajv": "^8.17.0" },
-  "devDependencies": { "tsx": "^4.19.0", "typescript": "^5.6.0" }
+  "scripts": {
+    "test": "node --import tsx --test *.spec.ts **/*.spec.ts"
+  },
+  "dependencies": {
+    "ajv": "^8.17.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
 }

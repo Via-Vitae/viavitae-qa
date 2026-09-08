@@ -34,9 +34,18 @@ const donors = generateDonors(faker, parishes);
 writeFileSync(join(DATA_DIR, "donors.json"), JSON.stringify(donors, null, 2) + "\n");
 
 const webhooks = generateWebhooks(faker);
-writeFileSync(join(WEBHOOKS_DIR, "stripe-payment-intent.json"), JSON.stringify(webhooks.stripe, null, 2) + "\n");
-writeFileSync(join(WEBHOOKS_DIR, "paysera-callback.json"), JSON.stringify(webhooks.paysera, null, 2) + "\n");
-writeFileSync(join(WEBHOOKS_DIR, "bitrix24-lead-created.json"), JSON.stringify(webhooks.bitrix24, null, 2) + "\n");
+writeFileSync(
+  join(WEBHOOKS_DIR, "stripe-payment-intent.json"),
+  JSON.stringify(webhooks.stripe, null, 2) + "\n",
+);
+writeFileSync(
+  join(WEBHOOKS_DIR, "paysera-callback.json"),
+  JSON.stringify(webhooks.paysera, null, 2) + "\n",
+);
+writeFileSync(
+  join(WEBHOOKS_DIR, "bitrix24-lead-created.json"),
+  JSON.stringify(webhooks.bitrix24, null, 2) + "\n",
+);
 
 console.log(`Generated fixtures with seed ${SEED}:`);
 console.log(`  ${parishes.length} parishes`);

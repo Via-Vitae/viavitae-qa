@@ -1,11 +1,13 @@
 import { test, expect } from "../../fixtures/test-base";
 
 test.describe("AI assistant", () => {
-  test("retrieval-only: answer contains citation; refuses off-corpus; disclosure visible", async ({ page }) => {
+  test("retrieval-only: answer contains citation; refuses off-corpus; disclosure visible", async ({
+    page,
+  }) => {
     const baseUrl = process.env.BASE_URL_DEMO_AI;
     test.skip(!baseUrl, "BASE_URL_DEMO_AI not set");
 
-    await page.goto(baseUrl);
+    await page.goto(baseUrl!);
 
     // On-corpus question — should return answer with citation
     await page.fill('[data-testid="question-input"]', "What is the assessment process?");

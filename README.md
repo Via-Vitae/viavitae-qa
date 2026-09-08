@@ -130,11 +130,11 @@ GitHub Environments at CI time; never commit actual URLs or credentials.
 All budgets live in `budgets/` and are imported by consuming repos. Changing a value
 here changes CI gates in every repository.
 
-| Budget file | Thresholds |
-| --- | --- |
-| `lighthouse-budgets.json` | LCP < 1.8 s, CLS < 0.1, TBT < 200 ms, TTI < 3.5 s |
-| `cwv-budgets.json` | CrUX-style field data thresholds per demo template |
-| `k6-thresholds.json` | p95 < 300 ms API, p99 < 800 ms, error rate < 0.1 % |
+| Budget file               | Thresholds                                         |
+| ------------------------- | -------------------------------------------------- |
+| `lighthouse-budgets.json` | LCP < 1.8 s, CLS < 0.1, TBT < 200 ms, TTI < 3.5 s  |
+| `cwv-budgets.json`        | CrUX-style field data thresholds per demo template |
+| `k6-thresholds.json`      | p95 < 300 ms API, p99 < 800 ms, error rate < 0.1 % |
 
 ## Synthetic fixtures
 
@@ -150,28 +150,28 @@ is a reference implementation only; no pipeline connects production to this repo
 
 ## Suite scoping
 
-| Trigger | What runs | Target |
-| --- | --- | --- |
-| Pull request | `pr-smoke.yml` — `@smoke` tags, budgets, axe on 1 page per affected repo | Staging, < 10 min |
-| Nightly | `nightly-e2e.yml` — full matrix (chromium x firefox x mobile), all suites | Staging |
-| Weekly | Lighthouse CI against production URLs | Production (read-only, informational) |
+| Trigger      | What runs                                                                 | Target                                |
+| ------------ | ------------------------------------------------------------------------- | ------------------------------------- |
+| Pull request | `pr-smoke.yml` — `@smoke` tags, budgets, axe on 1 page per affected repo  | Staging, < 10 min                     |
+| Nightly      | `nightly-e2e.yml` — full matrix (chromium x firefox x mobile), all suites | Staging                               |
+| Weekly       | Lighthouse CI against production URLs                                     | Production (read-only, informational) |
 
 ## Quality gates
 
 Every pull request must pass:
 
-| Gate | Tool | Threshold |
-| --- | --- | --- |
-| Lint | ESLint, Prettier, markdownlint | zero findings |
-| Format | Prettier | no diff |
-| Types | `tsc --noEmit` (strict) | zero errors |
-| Unit tests | `node:test`, pnpm workspaces | pass |
-| SAST | Semgrep (TypeScript ruleset) | zero findings |
-| Dependencies | Trivy filesystem | fail on `CRITICAL` |
-| Secrets | TruffleHog `--only-verified` | fail on any verified finding |
-| Licences | npm allow-list scan | unknown licence fails and is labelled |
-| Governance | presence checks | CODEOWNERS, `.editorconfig`, `.gitignore` present |
-| Fixtures | Schema validation + PII heuristics | hard fail on any PII match |
+| Gate         | Tool                               | Threshold                                         |
+| ------------ | ---------------------------------- | ------------------------------------------------- |
+| Lint         | ESLint, Prettier, markdownlint     | zero findings                                     |
+| Format       | Prettier                           | no diff                                           |
+| Types        | `tsc --noEmit` (strict)            | zero errors                                       |
+| Unit tests   | `node:test`, pnpm workspaces       | pass                                              |
+| SAST         | Semgrep (TypeScript ruleset)       | zero findings                                     |
+| Dependencies | Trivy filesystem                   | fail on `CRITICAL`                                |
+| Secrets      | TruffleHog `--only-verified`       | fail on any verified finding                      |
+| Licences     | npm allow-list scan                | unknown licence fails and is labelled             |
+| Governance   | presence checks                    | CODEOWNERS, `.editorconfig`, `.gitignore` present |
+| Fixtures     | Schema validation + PII heuristics | hard fail on any PII match                        |
 
 ## Security and compliance
 
@@ -186,18 +186,18 @@ Every pull request must pass:
 
 ## Documentation
 
-| Document | Purpose |
-| --- | --- |
-| [SECURITY.md](SECURITY.md) | Disclosure policy, SLA table, safe harbour, scope. |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Contribution workflow, PR rules, DCO sign-off. |
-| [CHANGELOG.md](CHANGELOG.md) | Release history in Keep a Changelog format. |
-| [QODER.md](QODER.md) | AI pair-programming guardrails and stop-conditions. |
-| [docs/architecture.md](docs/architecture.md) | MADR decision records and index. |
-| [docs/DPIA-template.md](docs/DPIA-template.md) | GDPR Article 35 assessment template. |
-| [docs/test-strategy.md](docs/test-strategy.md) | Test pyramid and risk-based scope. |
-| [docs/environments.md](docs/environments.md) | Environment URLs and credential policy. |
-| [docs/flaky-test-policy.md](docs/flaky-test-policy.md) | Quarantine process and fix SLA. |
-| [docs/reporting.md](docs/reporting.md) | Nightly report format and alert routing. |
+| Document                                               | Purpose                                             |
+| ------------------------------------------------------ | --------------------------------------------------- |
+| [SECURITY.md](SECURITY.md)                             | Disclosure policy, SLA table, safe harbour, scope.  |
+| [CONTRIBUTING.md](CONTRIBUTING.md)                     | Contribution workflow, PR rules, DCO sign-off.      |
+| [CHANGELOG.md](CHANGELOG.md)                           | Release history in Keep a Changelog format.         |
+| [QODER.md](QODER.md)                                   | AI pair-programming guardrails and stop-conditions. |
+| [docs/architecture.md](docs/architecture.md)           | MADR decision records and index.                    |
+| [docs/DPIA-template.md](docs/DPIA-template.md)         | GDPR Article 35 assessment template.                |
+| [docs/test-strategy.md](docs/test-strategy.md)         | Test pyramid and risk-based scope.                  |
+| [docs/environments.md](docs/environments.md)           | Environment URLs and credential policy.             |
+| [docs/flaky-test-policy.md](docs/flaky-test-policy.md) | Quarantine process and fix SLA.                     |
+| [docs/reporting.md](docs/reporting.md)                 | Nightly report format and alert routing.            |
 
 ## Licence
 

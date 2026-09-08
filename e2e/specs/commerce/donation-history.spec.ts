@@ -7,7 +7,7 @@ test.describe("Donor portal — donation history", () => {
 
     await page.goto(`${baseUrl}/donations`);
     await expect(page.locator('[data-testid="donation-list"]')).toBeVisible();
-    
+
     const downloadPromise = page.waitForEvent("download");
     await page.click('[data-testid="annual-statement"]');
     const download = await downloadPromise;

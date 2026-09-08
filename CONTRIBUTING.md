@@ -41,14 +41,14 @@ We work trunk-based. `main` is always deployable, always protected, and always m
 Prefix every branch with its type. The prefix drives changelog grouping and reviewer
 routing.
 
-| Prefix | Use | Example |
-| --- | --- | --- |
-| `feat/` | A new test suite or spec | `feat/donation-flow-spec` |
-| `fix/` | A bug fix | `fix/flaky-assessment-retry` |
-| `chore/` | Maintenance, dependencies, tooling | `chore/pin-action-shas` |
-| `docs/` | Documentation only | `docs/test-strategy-update` |
-| `test/` | Tests only, no production change | `test/k6-spike-scenario` |
-| `ci/` | CI configuration only | `ci/nightly-sharding` |
+| Prefix      | Use                                | Example                        |
+| ----------- | ---------------------------------- | ------------------------------ |
+| `feat/`     | A new test suite or spec           | `feat/donation-flow-spec`      |
+| `fix/`      | A bug fix                          | `fix/flaky-assessment-retry`   |
+| `chore/`    | Maintenance, dependencies, tooling | `chore/pin-action-shas`        |
+| `docs/`     | Documentation only                 | `docs/test-strategy-update`    |
+| `test/`     | Tests only, no production change   | `test/k6-spike-scenario`       |
+| `ci/`       | CI configuration only              | `ci/nightly-sharding`          |
 | `refactor/` | Restructuring, no behaviour change | `refactor/page-object-extract` |
 
 Keep names lowercase, hyphen-separated, and under 50 characters. Include the issue number
@@ -70,17 +70,17 @@ release note.
 Signed-off-by: Your Name <you@viavitae.com>
 ```
 
-| Type | Meaning | Changelog section |
-| --- | --- | --- |
-| `feat` | A new feature | **Added** |
-| `fix` | A bug fix | **Fixed** |
-| `perf` | A performance improvement | **Changed** |
-| `refactor` | Restructuring, no behaviour change | **Changed** |
-| `docs` | Documentation only | **Documentation** |
-| `test` | Adding or correcting tests | not released |
-| `build` / `ci` | CI configuration | **Infrastructure** |
-| `chore` | Other changes that touch neither source nor tests | not released |
-| `revert` | Reverting a previous commit | **Reverted** |
+| Type           | Meaning                                           | Changelog section  |
+| -------------- | ------------------------------------------------- | ------------------ |
+| `feat`         | A new feature                                     | **Added**          |
+| `fix`          | A bug fix                                         | **Fixed**          |
+| `perf`         | A performance improvement                         | **Changed**        |
+| `refactor`     | Restructuring, no behaviour change                | **Changed**        |
+| `docs`         | Documentation only                                | **Documentation**  |
+| `test`         | Adding or correcting tests                        | not released       |
+| `build` / `ci` | CI configuration                                  | **Infrastructure** |
+| `chore`        | Other changes that touch neither source nor tests | not released       |
+| `revert`       | Reverting a previous commit                       | **Reverted**       |
 
 Rules:
 
@@ -174,14 +174,14 @@ git diff main...HEAD
 
 ## QA-specific compliance items
 
-| Area | Requirement |
-| --- | --- |
-| **Synthetic data** | No production data in fixtures. PII heuristics hard-fail in CI. |
-| **Budget changes** | Changes to `budgets/` affect every consuming repo; note in PR description. |
-| **Flaky tests** | 3 flakes in 30 days triggers quarantine per `docs/flaky-test-policy.md`. |
-| **Staging only** | Load tests target staging only. Production is read-only, weekly, informational. |
-| **Secrets in fixtures** | Webhook fixtures must not contain live keys (`sk_live_`, `pk_live_`). |
-| **Cross-repo contracts** | Contract test changes may break consuming repos; coordinate. |
+| Area                     | Requirement                                                                     |
+| ------------------------ | ------------------------------------------------------------------------------- |
+| **Synthetic data**       | No production data in fixtures. PII heuristics hard-fail in CI.                 |
+| **Budget changes**       | Changes to `budgets/` affect every consuming repo; note in PR description.      |
+| **Flaky tests**          | 3 flakes in 30 days triggers quarantine per `docs/flaky-test-policy.md`.        |
+| **Staging only**         | Load tests target staging only. Production is read-only, weekly, informational. |
+| **Secrets in fixtures**  | Webhook fixtures must not contain live keys (`sk_live_`, `pk_live_`).           |
+| **Cross-repo contracts** | Contract test changes may break consuming repos; coordinate.                    |
 
 ## AI-assisted contributions
 
@@ -201,10 +201,10 @@ Note in the pull request description that AI assistance was used and which parts
 
 ## Getting help
 
-| Question | Where |
-| --- | --- |
-| Workflow, review, branch or commit rules | This document, then `#engineering` |
-| Architecture or design decisions | The architects, record as an ADR |
-| Personal data, DPIA, retention | `dpo@viavitae.com` |
-| Licensing and third-party components | `legal@viavitae.com` |
-| Vulnerabilities and security incidents | `security@viavitae.com` — private, per [SECURITY.md](SECURITY.md) |
+| Question                                 | Where                                                             |
+| ---------------------------------------- | ----------------------------------------------------------------- |
+| Workflow, review, branch or commit rules | This document, then `#engineering`                                |
+| Architecture or design decisions         | The architects, record as an ADR                                  |
+| Personal data, DPIA, retention           | `dpo@viavitae.com`                                                |
+| Licensing and third-party components     | `legal@viavitae.com`                                              |
+| Vulnerabilities and security incidents   | `security@viavitae.com` — private, per [SECURITY.md](SECURITY.md) |
