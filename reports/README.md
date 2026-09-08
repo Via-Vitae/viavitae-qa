@@ -15,9 +15,9 @@ gitignored.
 
 When running suites locally, reports are generated in:
 
-| Suite | Report location |
-| --- | --- |
-| Playwright e2e | `playwright-report/` |
-| axe | `playwright-report/` (same runner) |
-| k6 | `load/results/` |
-| Lighthouse | `performance/.lighthouseci/` |
+| Suite          | Report location                    |
+| -------------- | ---------------------------------- |
+| Playwright e2e | `playwright-report/`               |
+| axe            | `playwright-report/` (same runner) |
+| k6             | `load/results/`                    |
+| Lighthouse     | `performance/.lighthouseci/`       |

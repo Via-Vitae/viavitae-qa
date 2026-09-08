@@ -19,9 +19,18 @@ export interface Parish {
 const DIOCESES = ["vilnius", "kaunas", "siauliai", "panevezys", "telšiai", "vilkaviškis"];
 const TITLES = ["kunigas", "monsinjoras", "prelatas"];
 const LT_CITIES = [
-  "Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys",
-  "Alytus", "Marijampolė", "Mažeikiai", "Jonava", "Utena",
-  "Kėdainiai", "Telšiai",
+  "Vilnius",
+  "Kaunas",
+  "Klaipėda",
+  "Šiauliai",
+  "Panevėžys",
+  "Alytus",
+  "Marijampolė",
+  "Mažeikiai",
+  "Jonava",
+  "Utena",
+  "Kėdainiai",
+  "Telšiai",
 ];
 
 function randomId(prefix: string): string {

@@ -8,7 +8,7 @@ test.describe("Demo Make It Mine wizard", () => {
     await page.goto(`${baseUrl}/wizard`);
     await page.fill('[data-testid="wizard-name"]', "Demo Parish");
     await page.click('[data-testid="wizard-next"]');
-    
+
     // Verify prefill carried through
     await expect(page.locator('[data-testid="prefilled-name"]')).toHaveText("Demo Parish");
   });

@@ -86,13 +86,13 @@ npx playwright test --grep-invert @quarantined
 
 The nightly report includes a flake summary:
 
-| Metric | Target |
-| --- | --- |
-| Total specs | Count of all active specs |
-| Quarantined | Count of `@quarantined` specs |
-| Flakes this week | New specs that crossed the 3-flake threshold |
-| Deleted this month | Specs removed after SLA expiry |
-| Fix rate | % of quarantined specs fixed within SLA |
+| Metric             | Target                                       |
+| ------------------ | -------------------------------------------- |
+| Total specs        | Count of all active specs                    |
+| Quarantined        | Count of `@quarantined` specs                |
+| Flakes this week   | New specs that crossed the 3-flake threshold |
+| Deleted this month | Specs removed after SLA expiry               |
+| Fix rate           | % of quarantined specs fixed within SLA      |
 
 ## Prevention
 

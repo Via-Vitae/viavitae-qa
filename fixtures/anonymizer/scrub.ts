@@ -30,14 +30,14 @@ export function scrubField(field: string, value: string): ScrubResult {
   const transformations: Record<string, (v: string) => string> = {
     name: () => "[SYNTHETIC_NAME]",
     email: () => "[synthetic]@example.com",
-    phone: (v: string) => `+3706${"0".repeat(7)}`,
-    personal_code: (v: string) => `${"0".repeat(11)}`,
+    phone: (_v: string) => `+3706${"0".repeat(7)}`,
+    personal_code: (_v: string) => `${"0".repeat(11)}`,
     address: () => "[SYNTHETIC_ADDRESS]",
     postal_code: () => "LT-00000",
     payment_ref: () => "TEST-0000000000",
   };
 
-  const transform = transformations[field] ?? ((v: string) => `[REDACTED:${field}]`);
+  const transform = transformations[field] ?? ((_v: string) => `[REDACTED:${field}]`);
   return {
     original_hash: `sha256:${Buffer.from(value).toString("base64").slice(0, 12)}`,
     field,

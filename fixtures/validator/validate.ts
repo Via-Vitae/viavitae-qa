@@ -67,13 +67,36 @@ function scanFile(filePath: string): Finding[] {
 
     // Check other patterns
     if (LT_PERSONAL_CODE.test(line)) {
-      findings.push({ file: filePath, line: lineNum, pattern: "LT personal code format", context: line.trim().slice(0, 80) });
+      findings.push({
+        file: filePath,
+        line: lineNum,
+        pattern: "LT personal code format",
+        context: line.trim().slice(0, 80),
+      });
     }
     if (STRIPE_LIVE_KEY.test(line)) {
-      findings.push({ file: filePath, line: lineNum, pattern: "Stripe live key", context: line.trim().slice(0, 80) });
+      findings.push({
+        file: filePath,
+        line: lineNum,
+        pattern: "Stripe live key",
+        context: line.trim().slice(0, 80),
+      });
     }
     if (LT_IBAN.test(line)) {
-      findings.push({ file: filePath, line: lineNum, pattern: "LT IBAN format", context: line.trim().slice(0, 80) });
+      findings.push({
+        file: filePath,
+        line: lineNum,
+        pattern: "LT IBAN format",
+        context: line.trim().slice(0, 80),
+      });
+    }
+    if (PUBLIC_IP.test(line)) {
+      findings.push({
+        file: filePath,
+        line: lineNum,
+        pattern: "Non-private IP address",
+        context: line.trim().slice(0, 80),
+      });
     }
   }
 

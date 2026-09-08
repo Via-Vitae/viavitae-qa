@@ -16,18 +16,18 @@ touches personal data or residency cannot be taken without it.
 Write an ADR before implementing, not after. An ADR written afterwards is a justification;
 an ADR written before is a decision.
 
-| Situation | ADR required |
-| --- | --- |
-| Adding a new test suite or workspace | Yes |
-| Changing the browser matrix or shard strategy | Yes |
-| Introducing a new third-party dependency for testing | Yes |
-| Changing the staging environment contract | Yes |
-| Modifying PII heuristic patterns in the fixture validator | Yes |
-| Changing budget thresholds in `budgets/` (rule R1 — single source of truth) | Yes |
-| Diverging from `viavitae-template` governance or CI defaults (rule R1) | Yes |
-| Adding a Loki label or Alertmanager route | Yes |
-| A bug fix inside an existing agreed design | No |
-| Adding a test spec, a translation, or documentation | No |
+| Situation                                                                   | ADR required |
+| --------------------------------------------------------------------------- | ------------ |
+| Adding a new test suite or workspace                                        | Yes          |
+| Changing the browser matrix or shard strategy                               | Yes          |
+| Introducing a new third-party dependency for testing                        | Yes          |
+| Changing the staging environment contract                                   | Yes          |
+| Modifying PII heuristic patterns in the fixture validator                   | Yes          |
+| Changing budget thresholds in `budgets/` (rule R1 — single source of truth) | Yes          |
+| Diverging from `viavitae-template` governance or CI defaults (rule R1)      | Yes          |
+| Adding a Loki label or Alertmanager route                                   | Yes          |
+| A bug fix inside an existing agreed design                                  | No           |
+| Adding a test spec, a translation, or documentation                         | No           |
 
 ## Numbering convention
 
@@ -39,36 +39,36 @@ an ADR written before is a decision.
 
 ## Status values
 
-| Status | Meaning |
-| --- | --- |
-| `Proposed` | Under discussion. Implementation must not start. |
-| `Accepted` | Agreed and in force. Implementation may proceed. |
-| `Deprecated` | No longer applies to new work; existing suites may still depend on it. |
-| `Superseded by ADR-QA-MMM` | Replaced. Kept for history. |
-| `Rejected` | Considered and declined. |
+| Status                     | Meaning                                                                |
+| -------------------------- | ---------------------------------------------------------------------- |
+| `Proposed`                 | Under discussion. Implementation must not start.                       |
+| `Accepted`                 | Agreed and in force. Implementation may proceed.                       |
+| `Deprecated`               | No longer applies to new work; existing suites may still depend on it. |
+| `Superseded by ADR-QA-MMM` | Replaced. Kept for history.                                            |
+| `Rejected`                 | Considered and declined.                                               |
 
 ---
 
 ## Index
 
-| ADR | Title | Status | Owner | Date |
-| --- | --- | --- | --- | --- |
+| ADR                                                                         | Title                                              | Status   | Owner          | Date       |
+| --------------------------------------------------------------------------- | -------------------------------------------------- | -------- | -------------- | ---------- |
 | [ADR-QA-001](#adr-qa-001-repo-placement-polyrepo-over-monorepo-test-folder) | Repo placement: polyrepo over monorepo test folder | Accepted | @JourneyOfLife | 2026-09-07 |
-| _ADR-QA-002_ | _next available number_ | — | — | — |
+| _ADR-QA-002_                                                                | _next available number_                            | —        | —              | —          |
 
 ---
 
 ## ADR-QA-001: Repo placement — polyrepo over monorepo test folder
 
-| Field | Value |
-| --- | --- |
-| **Status** | Accepted |
-| **Owner** | `@JourneyOfLife` |
-| **Date** | 2026-09-07 |
-| **Deciders** | Architects, QA |
-| **Consulted** | Security, DPO |
-| **Supersedes** | — |
-| **Superseded by** | — |
+| Field             | Value            |
+| ----------------- | ---------------- |
+| **Status**        | Accepted         |
+| **Owner**         | `@JourneyOfLife` |
+| **Date**          | 2026-09-07       |
+| **Deciders**      | Architects, QA   |
+| **Consulted**     | Security, DPO    |
+| **Supersedes**    | —                |
+| **Superseded by** | —                |
 
 ### Context
 
@@ -104,20 +104,20 @@ viavitae-qa is a standalone repository, not a subfolder of any application repo.
 
 ### Alternatives considered
 
-| Alternative | Why rejected |
-| --- | --- |
-| Embed tests in viavitae-web `tests/` | Couples cross-repo tests to a single app; budget changes trigger app deployments; contract tests cannot span repos. |
-| Monorepo containing all projects | Conflicts with per-repo ownership, licensing, and GitHub template mechanism. Widens blast radius of credential compromise. |
-| Shared GitHub Actions workflows only | Does not solve fixture governance, budget single-sourcing, or cross-repo contract testing. |
+| Alternative                          | Why rejected                                                                                                               |
+| ------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Embed tests in viavitae-web `tests/` | Couples cross-repo tests to a single app; budget changes trigger app deployments; contract tests cannot span repos.        |
+| Monorepo containing all projects     | Conflicts with per-repo ownership, licensing, and GitHub template mechanism. Widens blast radius of credential compromise. |
+| Shared GitHub Actions workflows only | Does not solve fixture governance, budget single-sourcing, or cross-repo contract testing.                                 |
 
 ### Compliance impact
 
-| Area | Impact |
-| --- | --- |
-| GDPR | Positive. Synthetic-only fixtures with PII heuristic validation are the GDPR safeguard for test data. Independent enforcement prevents drift. |
-| Data residency | None. No personal data is processed. |
-| Accessibility | Positive. axe WCAG 2.2 AA gates are independently enforced. |
-| New processors introduced | None. |
+| Area                      | Impact                                                                                                                                        |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| GDPR                      | Positive. Synthetic-only fixtures with PII heuristic validation are the GDPR safeguard for test data. Independent enforcement prevents drift. |
+| Data residency            | None. No personal data is processed.                                                                                                          |
+| Accessibility             | Positive. axe WCAG 2.2 AA gates are independently enforced.                                                                                   |
+| New processors introduced | None.                                                                                                                                         |
 
 ---
 
@@ -129,15 +129,15 @@ number from the index, and add the index row in the same pull request.
 ```markdown
 ## ADR-QA-NNN: <short title in sentence case>
 
-| Field | Value |
-| --- | --- |
-| **Status** | Proposed |
-| **Owner** | <team handle, e.g. @JourneyOfLife> |
-| **Date** | <YYYY-MM-DD> |
-| **Deciders** | <roles and teams that agreed> |
-| **Consulted** | <roles and teams whose input was sought> |
-| **Supersedes** | <ADR-QA-NNN or —> |
-| **Superseded by** | <ADR-QA-NNN or —> |
+| Field             | Value                                    |
+| ----------------- | ---------------------------------------- |
+| **Status**        | Proposed                                 |
+| **Owner**         | <team handle, e.g. @JourneyOfLife>       |
+| **Date**          | <YYYY-MM-DD>                             |
+| **Deciders**      | <roles and teams that agreed>            |
+| **Consulted**     | <roles and teams whose input was sought> |
+| **Supersedes**    | <ADR-QA-NNN or —>                        |
+| **Superseded by** | <ADR-QA-NNN or —>                        |
 
 ### Context
 

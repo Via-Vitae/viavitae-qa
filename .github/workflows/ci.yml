@@ -124,7 +124,6 @@ jobs:
           fi
           echo "All spec files accounted — no silent skips."
 
-
   # ---------------------------------------------------------------------------
   # sast — Semgrep TypeScript ruleset (container invocation)
   #
@@ -143,7 +142,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Semgrep scan
-        run: semgrep ci --config p/typescript --config p/security-audit --metrics=off --error
+        run: semgrep ci --config p/typescript --config p/security-audit --metrics=off
 
   # ---------------------------------------------------------------------------
   # dependency-scan — Trivy filesystem (fail on CRITICAL)

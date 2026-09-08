@@ -15,12 +15,12 @@ jobs complete. The report is published to three destinations:
 Each nightly run uploads a consolidated artifact named `nightly-consolidated-report`
 containing:
 
-| Path | Contents |
-| --- | --- |
-| `playwright-report/` | HTML report from Playwright (all browsers, all shards) |
-| `test-results/` | JSON results, screenshots on failure, traces on retry |
-| `load/results/` | k6 summary JSON and CSV |
-| `performance/.lighthouseci/` | Lighthouse CI JSON reports |
+| Path                         | Contents                                               |
+| ---------------------------- | ------------------------------------------------------ |
+| `playwright-report/`         | HTML report from Playwright (all browsers, all shards) |
+| `test-results/`              | JSON results, screenshots on failure, traces on retry  |
+| `load/results/`              | k6 summary JSON and CSV                                |
+| `performance/.lighthouseci/` | Lighthouse CI JSON reports                             |
 
 Artifacts are retained for **30 days**. After that, only the GitHub Actions run log
 preserves the summary.
@@ -29,13 +29,13 @@ preserves the summary.
 
 The nightly report job pushes a summary to Loki for long-term querying:
 
-| Field | Value |
-| --- | --- |
-| **Endpoint** | `LOKI_URL` secret (GitHub Environment: `staging`) |
-| **Authentication** | `LOKI_TOKEN` bearer token |
-| **Labels** | `job=viavitae-qa`, `suite=nightly`, `repo_target=staging` |
-| **Payload** | JSON of job results (e2e, load, a11y, performance) with pass/fail counts |
-| **Timestamp** | UTC ISO 8601 of the report generation |
+| Field              | Value                                                                    |
+| ------------------ | ------------------------------------------------------------------------ |
+| **Endpoint**       | `LOKI_URL` secret (GitHub Environment: `staging`)                        |
+| **Authentication** | `LOKI_TOKEN` bearer token                                                |
+| **Labels**         | `job=viavitae-qa`, `suite=nightly`, `repo_target=staging`                |
+| **Payload**        | JSON of job results (e2e, load, a11y, performance) with pass/fail counts |
+| **Timestamp**      | UTC ISO 8601 of the report generation                                    |
 
 Querying Loki:
 
@@ -47,13 +47,13 @@ Querying Loki:
 
 If any nightly job fails, an alert is posted to Alertmanager:
 
-| Field | Value |
-| --- | --- |
-| **Endpoint** | `ALERTMANAGER_URL` secret (GitHub Environment: `staging`) |
-| **Alert name** | `viavitae-qa-nightly-failure` |
-| **Severity** | `warning` |
-| **Labels** | `repo=viavitae-qa`, `run_id=<github run id>` |
-| **Annotations** | `summary`, `description` with failure count and run URL |
+| Field           | Value                                                     |
+| --------------- | --------------------------------------------------------- |
+| **Endpoint**    | `ALERTMANAGER_URL` secret (GitHub Environment: `staging`) |
+| **Alert name**  | `viavitae-qa-nightly-failure`                             |
+| **Severity**    | `warning`                                                 |
+| **Labels**      | `repo=viavitae-qa`, `run_id=<github run id>`              |
+| **Annotations** | `summary`, `description` with failure count and run URL   |
 
 Alert routing is managed by viavitae-infra/monitoring. The on-call process is:
 
@@ -69,10 +69,10 @@ Alert routing is managed by viavitae-infra/monitoring. The on-call process is:
 
 PR smoke tests (`pr-smoke.yml`) upload artifacts per job:
 
-| Artifact | Retention |
-| --- | --- |
-| `playwright-smoke-report` | 14 days |
-| `axe-smoke-report` | 14 days |
+| Artifact                  | Retention |
+| ------------------------- | --------- |
+| `playwright-smoke-report` | 14 days   |
+| `axe-smoke-report`        | 14 days   |
 
 These are available on the PR's Actions tab. No Loki or Alertmanager integration for
 PR runs — failures block the merge via the required status check.
@@ -96,12 +96,12 @@ is **informational only**:
 The quarterly manual accessibility audit (`a11y/manual/wcag-2.2-aa-checklist.md`) is
 enforced by this reporting schedule:
 
-| Quarter | Audit due | Owner |
-| --- | --- | --- |
-| Q1 (Jan–Mar) | 31 March | @JourneyOfLife |
-| Q2 (Apr–Jun) | 30 June | @JourneyOfLife |
+| Quarter      | Audit due    | Owner          |
+| ------------ | ------------ | -------------- |
+| Q1 (Jan–Mar) | 31 March     | @JourneyOfLife |
+| Q2 (Apr–Jun) | 30 June      | @JourneyOfLife |
 | Q3 (Jul–Sep) | 30 September | @JourneyOfLife |
-| Q4 (Oct–Dec) | 31 December | @JourneyOfLife |
+| Q4 (Oct–Dec) | 31 December  | @JourneyOfLife |
 
 The audit covers:
 
@@ -136,9 +136,9 @@ Run: https://github.com/Via-Vitae/viavitae-qa/actions/runs/12345
 
 ### Loki labels
 
-| Label | Values | Purpose |
-| --- | --- | --- |
-| `job` | `viavitae-qa` | Repository identifier |
-| `suite` | `nightly`, `pr-smoke`, `weekly-prod` | Suite type |
-| `repo_target` | `staging`, `production` | Environment tested |
-| `run_id` | GitHub Actions run ID | Cross-reference |
+| Label         | Values                               | Purpose               |
+| ------------- | ------------------------------------ | --------------------- |
+| `job`         | `viavitae-qa`                        | Repository identifier |
+| `suite`       | `nightly`, `pr-smoke`, `weekly-prod` | Suite type            |
+| `repo_target` | `staging`, `production`              | Environment tested    |
+| `run_id`      | GitHub Actions run ID                | Cross-reference       |

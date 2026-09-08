@@ -7,6 +7,6 @@ for (const tpl of TEMPLATES) {
     test.skip(!url, `BASE_URL_DEMO_${tpl.replace(/-/g, "_").toUpperCase()} not set`);
     await page.goto(url!);
     const results = await new AxeBuilder({ page }).withTags(["wcag22aa"]).analyze();
-    expect(results.violations.filter(v => v.impact === "critical")).toHaveLength(0);
+    expect(results.violations.filter((v) => v.impact === "critical")).toHaveLength(0);
   });
 }

@@ -1,5 +1,15 @@
 import { test, expect } from "../../fixtures/test-base";
-const TEMPLATES = ["assessment", "donation", "ai-assistant", "sso-portal", "store", "cemetery-map", "donor-portal", "i18n", "reset"];
+const TEMPLATES = [
+  "assessment",
+  "donation",
+  "ai-assistant",
+  "sso-portal",
+  "store",
+  "cemetery-map",
+  "donor-portal",
+  "i18n",
+  "reset",
+];
 test.describe("Demo templates — banner, disclaimer, CTA", () => {
   for (const tpl of TEMPLATES) {
     test(`${tpl}: banner + disclaimer + CTA present`, async ({ page }) => {

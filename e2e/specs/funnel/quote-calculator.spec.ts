@@ -11,7 +11,7 @@ test.describe("Quote calculator", () => {
     await page.click('[data-testid="calculate"]');
 
     await expect(page.locator('[data-testid="quote-amount"]')).toBeVisible();
-    
+
     const downloadPromise = page.waitForEvent("download");
     await page.click('[data-testid="download-pdf"]');
     const download = await downloadPromise;

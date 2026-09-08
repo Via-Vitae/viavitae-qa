@@ -6,6 +6,6 @@ test.describe("Funnel accessibility", () => {
     test.skip(!url, "BASE_URL_DEMO_ASSESSMENT not set");
     await page.goto(url!);
     const results = await new AxeBuilder({ page }).withTags(["wcag22aa"]).analyze();
-    expect(results.violations.filter(v => v.impact === "critical")).toHaveLength(0);
+    expect(results.violations.filter((v) => v.impact === "critical")).toHaveLength(0);
   });
 });

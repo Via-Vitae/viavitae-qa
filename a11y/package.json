@@ -4,7 +4,15 @@
   "private": true,
   "description": "axe-core WCAG 2.2 AA accessibility suites.",
   "type": "module",
-  "scripts": { "test": "playwright test", "test:a11y": "playwright test" },
-  "dependencies": { "@playwright/test": "^1.48.0", "@axe-core/playwright": "^4.10.0" },
-  "devDependencies": { "typescript": "^5.6.0" }
+  "scripts": {
+    "test": "playwright test",
+    "test:a11y": "playwright test"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.48.0",
+    "@axe-core/playwright": "^4.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
 }

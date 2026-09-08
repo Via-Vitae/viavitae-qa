@@ -1,22 +1,11 @@
 {
   "_comment": "k6 load test thresholds. Imported by load/k6.config.js. All latencies in milliseconds. Change a value here → all k6 scenarios inherit.",
   "thresholds": {
-    "http_req_duration": [
-      "p(95)<300",
-      "p(99)<800"
-    ],
-    "http_req_failed": [
-      "rate<0.001"
-    ],
-    "http_req_connecting": [
-      "p(95)<50"
-    ],
-    "http_req_tls_handshaking": [
-      "p(95)<100"
-    ],
-    "iteration_duration": [
-      "p(95)<2000"
-    ]
+    "http_req_duration": ["p(95)<300", "p(99)<800"],
+    "http_req_failed": ["rate<0.001"],
+    "http_req_connecting": ["p(95)<50"],
+    "http_req_tls_handshaking": ["p(95)<100"],
+    "iteration_duration": ["p(95)<2000"]
   },
   "per_endpoint": {
     "GET /v1/parishes": {

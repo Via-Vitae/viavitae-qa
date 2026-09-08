@@ -4,7 +4,14 @@
   "private": true,
   "description": "Lighthouse CI orchestration — imports budgets from budgets/.",
   "type": "module",
-  "scripts": { "test": "lhci autorun", "test:performance": "lhci autorun" },
-  "dependencies": { "@lhci/cli": "^0.14.0" },
-  "devDependencies": { "typescript": "^5.6.0" }
+  "scripts": {
+    "test": "lhci autorun",
+    "test:performance": "lhci autorun"
+  },
+  "dependencies": {
+    "@lhci/cli": "^0.14.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  }
 }

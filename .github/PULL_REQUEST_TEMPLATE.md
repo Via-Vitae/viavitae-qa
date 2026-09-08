@@ -61,8 +61,8 @@ Closes #
 ## New dependencies
 
 | Package | Version | Licence | Why |
-| --- | --- | --- | --- |
-| | | | |
+| ------- | ------- | ------- | --- |
+|         |         |         |     |
 
 ## Budget impact
 
