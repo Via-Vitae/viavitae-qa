@@ -9,7 +9,7 @@
     "test:performance": "lhci autorun"
   },
   "dependencies": {
-    "@lhci/cli": "^0.14.0"
+    "@lhci/cli": "^0.15.1"
   },
   "devDependencies": {
     "typescript": "^5.6.0"
