@@ -89,7 +89,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -148,7 +148,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -188,7 +188,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -234,7 +234,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
