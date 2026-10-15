@@ -11,7 +11,7 @@
     "pnpm": ">=9.0.0"
   },
   "scripts": {
-    "lint": "eslint . --ext .ts,.tsx,.js && prettier --check . && markdownlint '**/*.md' --ignore node_modules",
+    "lint": "eslint . --ext .ts,.tsx,.js && prettier --check . && markdownlint '**/*.md' --ignore '**/node_modules/**'",
     "lint:fix": "eslint . --ext .ts,.tsx,.js --fix && prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",

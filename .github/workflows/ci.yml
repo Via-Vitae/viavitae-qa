@@ -49,7 +49,7 @@ jobs:
         run: pnpm exec prettier --check .
 
       - name: Markdownlint
-        run: pnpm exec markdownlint '**/*.md' --ignore node_modules
+        run: pnpm exec markdownlint '**/*.md' --ignore '**/node_modules/**'
 
   # ---------------------------------------------------------------------------
   # typecheck — tsc --noEmit (strict)

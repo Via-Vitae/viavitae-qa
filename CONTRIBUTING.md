@@ -201,10 +201,10 @@ Note in the pull request description that AI assistance was used and which parts
 
 ## Getting help
 
-| Question                                 | Where                                                             |
-| ---------------------------------------- | ----------------------------------------------------------------- |
-| Workflow, review, branch or commit rules | This document, then `#engineering`                                |
-| Architecture or design decisions         | The architects, record as an ADR                                  |
-| Personal data, DPIA, retention           | `journey4oflife+viavitae.privacy@gmail.com`                                                |
-| Licensing and third-party components     | `journey4oflife+viavitae.billing@gmail.com`                                              |
+| Question                                 | Where                                                                                  |
+| ---------------------------------------- | -------------------------------------------------------------------------------------- |
+| Workflow, review, branch or commit rules | This document, then `#engineering`                                                     |
+| Architecture or design decisions         | The architects, record as an ADR                                                       |
+| Personal data, DPIA, retention           | `journey4oflife+viavitae.privacy@gmail.com`                                            |
+| Licensing and third-party components     | `journey4oflife+viavitae.billing@gmail.com`                                            |
 | Vulnerabilities and security incidents   | `journey4oflife+viavitae.security@gmail.com` — private, per [SECURITY.md](SECURITY.md) |
