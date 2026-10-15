@@ -57,7 +57,7 @@ jobs:
           fetch-depth: 0
 
       - name: TruffleHog — verify-only scan of full history
-        uses: trufflesecurity/trufflehog@4b7d1d3a6827691637eff750b6482042e06462d0 # main
+        uses: trufflesecurity/trufflehog@feea7f94e0994eca3159e1edffa943fa60271021 # main
         with:
           # --only-verified confirms each secret is actually valid before reporting,
           # eliminating false positives. This is the org-standard mode (licence-free,
