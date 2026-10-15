@@ -171,3 +171,34 @@ jobs:
           scan-ref: "."
           severity: "CRITICAL"
           exit-code: "1"
+
+  # ---------------------------------------------------------------------------
+  # ci-status — single honest verdict for the whole pipeline
+  # ---------------------------------------------------------------------------
+  # This job existed in the template from the start and was missing here, which
+  # is why nothing in this repository's CI could block a merge: the only required
+  # context is "Compliance status", produced by a different workflow. So Lint,
+  # Typecheck and Dependency scan could each be red on main and no gate reacted.
+  ci-status:
+    name: CI status
+    needs: [lint, typecheck, unit, sast, dependency-scan]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Evaluate required gates
+        run: |
+          set -euo pipefail
+          # The verdict is computed by the expression engine from the needs
+          # context, then passed in as an env var. Do NOT grep toJSON(needs):
+          # if the serialised JSON carries a space after the colon the pattern
+          # matches nothing and this gate passes over failing jobs (seen on
+          # viavitae-web PR #32: Lint + Unit failed, CI status reported success).
+          printf '%s\n' '${{ toJSON(needs) }}'
+          if [[ "${{ env.GATE_BAD }}" == "true" ]]; then
+            echo "::error::A required CI gate failed or was cancelled."
+            exit 1
+          fi
+          echo "All CI gates passed or were legitimately skipped."
+        env:
+          GATE_BAD: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
