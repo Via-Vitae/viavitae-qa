@@ -11,7 +11,7 @@
     "test:debug": "playwright test --debug"
   },
   "dependencies": {
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.64.0",
     "@via-vitae/qa-fixtures": "workspace:*"
   },
   "devDependencies": {

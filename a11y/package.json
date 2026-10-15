@@ -9,7 +9,7 @@
     "test:a11y": "playwright test"
   },
   "dependencies": {
-    "@playwright/test": "^1.48.0",
+    "@playwright/test": "^1.64.0",
     "@axe-core/playwright": "^4.10.0"
   },
   "devDependencies": {
