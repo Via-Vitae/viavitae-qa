@@ -15,7 +15,7 @@
 | **Owner**         | `@JourneyOfLife`    |
 | **Date**          | 2026-09-07          |
 | **Review date**   | 2027-09-07 (annual) |
-| **DPO consulted** | dpo@viavitae.com    |
+| **DPO consulted** | journey4oflife+viavitae.privacy@gmail.com    |
 
 ### 1. Description of processing
 
@@ -77,7 +77,7 @@ processing begins.
 | **Owner**         | <handle>                 |
 | **Date**          | <YYYY-MM-DD>             |
 | **Review date**   | <YYYY-MM-DD, max 1 year> |
-| **DPO consulted** | dpo@viavitae.com         |
+| **DPO consulted** | journey4oflife+viavitae.privacy@gmail.com         |
 
 ### 1. Description of processing
 

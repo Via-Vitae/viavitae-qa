@@ -10,7 +10,7 @@ body:
       value: |
         ## Stop — is this a security vulnerability?
         **Do not file a public issue for a security problem.**
-        Report privately to **security@viavitae.com**. See [SECURITY.md](../../SECURITY.md).
+        Report privately to **journey4oflife+viavitae.security@gmail.com**. See [SECURITY.md](../../SECURITY.md).
 
   - type: dropdown
     id: severity
