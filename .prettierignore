@@ -1,0 +1,5 @@
+# Generated files: the formatter must not fight the generator.
+# pnpm rewrites this file on every install and owns its layout.
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

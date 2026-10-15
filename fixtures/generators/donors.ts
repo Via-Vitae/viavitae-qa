@@ -33,7 +33,7 @@ export function generateDonors(faker: Faker, parishes: Parish[]): Donor[] {
       id: randomId("donor"),
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
-      email: `${faker.internet.userName()}@example.com`,
+      email: `${faker.internet.username()}@example.com`,
       phone: `+3706${faker.string.numeric(7)}`,
       address: {
         street: `${faker.location.street()} ${faker.location.buildingNumber()}`,

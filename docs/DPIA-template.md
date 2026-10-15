@@ -9,13 +9,13 @@
 
 ## DPIA-QA-000: Baseline assessment — synthetic-only test data
 
-| Field             | Value               |
-| ----------------- | ------------------- |
-| **Status**        | Accepted            |
-| **Owner**         | `@JourneyOfLife`    |
-| **Date**          | 2026-09-07          |
-| **Review date**   | 2027-09-07 (annual) |
-| **DPO consulted** | journey4oflife+viavitae.privacy@gmail.com    |
+| Field             | Value                                     |
+| ----------------- | ----------------------------------------- |
+| **Status**        | Accepted                                  |
+| **Owner**         | `@JourneyOfLife`                          |
+| **Date**          | 2026-09-07                                |
+| **Review date**   | 2027-09-07 (annual)                       |
+| **DPO consulted** | journey4oflife+viavitae.privacy@gmail.com |
 
 ### 1. Description of processing
 
@@ -71,13 +71,13 @@ processing begins.
 ```markdown
 ## DPIA-QA-NNN: <title>
 
-| Field             | Value                    |
-| ----------------- | ------------------------ |
-| **Status**        | Proposed                 |
-| **Owner**         | <handle>                 |
-| **Date**          | <YYYY-MM-DD>             |
-| **Review date**   | <YYYY-MM-DD, max 1 year> |
-| **DPO consulted** | journey4oflife+viavitae.privacy@gmail.com         |
+| Field             | Value                                     |
+| ----------------- | ----------------------------------------- |
+| **Status**        | Proposed                                  |
+| **Owner**         | <handle>                                  |
+| **Date**          | <YYYY-MM-DD>                              |
+| **Review date**   | <YYYY-MM-DD, max 1 year>                  |
+| **DPO consulted** | journey4oflife+viavitae.privacy@gmail.com |
 
 ### 1. Description of processing
 
